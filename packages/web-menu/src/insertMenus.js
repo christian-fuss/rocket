@@ -1,5 +1,5 @@
 // import { readFile, writeFile } from 'fs/promises';
-import { renderBreadcrumb } from './renderBreadcrumb.js';
+import { defaultPresets } from './defaultPresets.js';
 import { renderMenu } from './renderMenu.js';
 import { replaceBetween } from './sax-helpers.js';
 
@@ -22,24 +22,6 @@ function removeCurrent(tree) {
     }
   }
 }
-
-const defaultPresets = {
-  header: {
-    render: ({ node, link }) => {
-      return `
-        <nav role="navigation" aria-label="Header" class="web-menu-header">
-          ${node.children.map(child => link({ node: child })).join('\n')}
-        </nav>
-      `;
-    },
-  },
-  headerWithoutNav: {
-    render: ({ node, link }) => node.children.map(child => link({ node: child })).join('\n'),
-  },
-  breadcrumb: {
-    render: renderBreadcrumb
-  },
-};
 
 export async function insertMenus(tree, options = {}) {
   let counter = 0;

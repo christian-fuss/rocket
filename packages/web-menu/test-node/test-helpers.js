@@ -43,7 +43,7 @@ export async function executeParse(inPath, opts = {}) {
   return metaData;
 }
 
-export async function executeCli({ docsDir, configFile } = {}, { captureLog = true } = {}) {
+export async function executeCli({ docsDir, configFile } = {}, { captureLog = false } = {}) {
   const options = { docsDir, configFile };
   if (docsDir) {
     options.docsDir = path.join(__dirname, docsDir.split('/').join(path.sep));

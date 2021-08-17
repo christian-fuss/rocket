@@ -11,7 +11,12 @@ describe('cli', () => {
   });
 
   it('works for two pages', async () => {
-    const { readOutput, log } = await executeCli({ docsDir: 'fixtures/two-pages' });
+    const { readOutput, log } = await executeCli(
+      {
+        docsDir: 'fixtures/two-pages',
+      },
+      { captureLog: true },
+    );
     expect(log[0]).to.equal('👀 Analyzing file tree...');
     expect(log[1]).to.equal('📖 Found 2 pages');
     expect(log[2]).to.equal('📝 Inserted 2 menus!');
@@ -44,7 +49,12 @@ describe('cli', () => {
   });
 
   it('works for multiple nested pages', async () => {
-    const { readOutput, log } = await executeCli({ docsDir: 'fixtures/nested-pages' });
+    const { readOutput, log } = await executeCli(
+      {
+        docsDir: 'fixtures/nested-pages',
+      },
+      { captureLog: true },
+    );
     expect(log[1]).to.equal('📖 Found 6 pages');
     expect(log[2]).to.equal('📝 Inserted 6 menus!');
 
@@ -96,9 +106,12 @@ describe('cli', () => {
   });
 
   it('supports custom config files', async () => {
-    const { readOutput } = await executeCli({
-      configFile: 'fixtures/my-menu.web-menu.config.js',
-    });
+    const { readOutput } = await executeCli(
+      {
+        configFile: 'fixtures/my-menu.web-menu.config.js',
+      },
+      { captureLog: true },
+    );
     const index = await readOutput('index.html');
     expect(index).to.equal(
       [

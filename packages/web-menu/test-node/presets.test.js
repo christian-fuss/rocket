@@ -11,7 +11,10 @@ describe('presets', () => {
   });
 
   it('breadcrumb', async () => {
-    const { readOutput } = await executeCli({ docsDir: 'fixtures/preset-breadcrumb' });
+    const { readOutput } = await executeCli(
+      { docsDir: 'fixtures/preset-breadcrumb' },
+      { captureLog: true },
+    );
 
     const buttonBlue = await readOutput('components/button-blue/index.html');
     expect(buttonBlue).to.equal(
@@ -101,7 +104,10 @@ describe('presets', () => {
   });
 
   it('header', async () => {
-    const { readOutput } = await executeCli({ docsDir: 'fixtures/preset-header' });
+    const { readOutput } = await executeCli(
+      { docsDir: 'fixtures/preset-header' },
+      { captureLog: true },
+    );
 
     const buttonRed = await readOutput('components/button-red/index.html');
     expect(buttonRed).to.equal(
@@ -132,6 +138,31 @@ describe('presets', () => {
         '    <nav role="navigation" aria-label="Header" class="web-menu-header">',
         '      <a href="/about/">About</a>',
         '      <a href="/components/" aria-current="page">Components</a>',
+        '    </nav>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+  });
+
+  it.skip('main', async () => {
+    const { readOutput } = await executeCli(
+      { docsDir: 'fixtures/preset-main' },
+      { captureLog: true },
+    );
+
+    const buttonRed = await readOutput('components/content/accordion/index.html');
+    expect(buttonRed).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Button Red</title>',
+        '  </head>',
+        '  <body>',
+        '    <nav role="navigation" aria-label="main" class="web-menu-main">',
+        '      <a href="/about/">About</a>',
+        '      <a href="/components/">Components</a>',
         '    </nav>',
         '  </body>',
         '</html>',

@@ -27,8 +27,8 @@ function defaultListItem({ node, list, link, ...options }) {
   return `<li${cssClasses}>${link(passOn)}${node.children.length > 0 ? list(passOn) : ''}</li>`;
 }
 
-function defaultLink({ node }) {
-  const current = node.model.current ? ' aria-current="page" ' : '';
+function defaultLink({ node, currentNode }) {
+  const current = node === currentNode ? ' aria-current="page" ' : '';
   return `<a href="${node.model.url}"${current}>${node.model.name}</a>`;
 }
 
@@ -48,5 +48,6 @@ export async function renderMenu({
   link = defaultLink,
   childCondition = () => true,
 } = {}) {
-  return render({ node, list, listItem, link, childCondition });
+  const currentNode = node.first(entry => entry.model.current === true);
+  return render({ node, currentNode, list, listItem, link, childCondition });
 }
