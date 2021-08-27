@@ -69,16 +69,25 @@ export function parseHtmlFile(htmlFilePath, options) {
       if (data.name === 'h1') {
         metaData.h1 = getText(data);
       }
-    }
 
-    if (ev === SaxEventType.Comment) {
-      const data = /** @type {Text} */ (/** @type {any} */ (_data));
-      const commentText = getCommentText(data);
-      if (commentText.startsWith('[INSERT-WEB-MENU-PRESET-WITH-NAME="')) {
-        const parts = commentText.split('"');
-        metaData.menus.push({ name: parts[1],  start: data.start, end: data.end });
+      if (data.name === 'html-include') {
+        const src = getAttribute(data, 'src');
+        if (src && src.startsWith('webmenu:')) {
+          const parts = src.split(':');
+          // console.log(data.toJSON());
+          metaData.menus.push({ name: parts[1],  start: data.openStart, end: data.closeEnd });
+        }
       }
     }
+
+    // if (ev === SaxEventType.Comment) {
+    //   const data = /** @type {Text} */ (/** @type {any} */ (_data));
+    //   const commentText = getCommentText(data);
+    //   if (commentText.startsWith('[INSERT-WEB-MENU-PRESET-WITH-NAME="')) {
+    //     const parts = commentText.split('"');
+    //     metaData.menus.push({ name: parts[1],  start: data.start, end: data.end });
+    //   }
+    // }
   };
 
   return new Promise(resolve => {
