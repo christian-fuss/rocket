@@ -132,4 +132,32 @@ describe('cli', () => {
       ].join('\n'),
     );
   });
+
+  it.skip('allows to order pages', async () => {
+    const { readOutput } = await executeCli(
+      {
+        docsDir: 'fixtures/order',
+      },
+      { captureLog: true },
+    );
+
+    const index = await readOutput('index.html');
+    expect(index).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Welcome to two pages | My Page</title>',
+        '  </head>',
+        '  <body>',
+        '    <nav aria-label="Header" class="web-menu-header">',
+        '      <a href="/page-c/">Page C</a>',
+        '      <a href="/page-b/">Page B</a>',
+        '      <a href="/page-a/">Page A</a>',
+        '    </nav>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+  });  
 });

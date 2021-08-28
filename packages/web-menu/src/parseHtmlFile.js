@@ -89,7 +89,7 @@ export function parseHtmlFile(htmlFilePath, options) {
 
       if (data.name === 'html-include') {
         const src = getAttribute(data, 'src');
-        if (src && src.startsWith('webmenu:')) {
+        if (src && src.startsWith('menu:')) {
           const parts = src.split(':');
           metaData.menus.push({ name: parts[1], start: data.openStart, end: data.closeEnd });
         }
