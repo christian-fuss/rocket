@@ -49,14 +49,14 @@ export const defaultPresets = {
     navLabel: 'Table of Contents',
     navHeader: '<h2>Contents</h2>',
     navWrapper: nav => `<aside>${nav}</aside>`,
-    render: async ({ list, currentNode, navHeader, navWrapper, ...options }) => {
+    render: async ({ list, currentNode, navHeader, navLabel, navWrapper, ...options }) => {
       if (
         currentNode.model.tableOfContentsNode &&
         currentNode.model.tableOfContentsNode.children.length > 0
       ) {
         const navString = `
           ${navHeader}
-          <nav aria-label="Table of Contents" class="web-menu-tableOfContents">
+          <nav aria-label="${navLabel}" class="web-menu-tableOfContents">
             ${list({
               ...options,
               node: currentNode.model.tableOfContentsNode,

@@ -128,6 +128,16 @@ describe('buildTree', () => {
       title: 'Welcome to the toc preset | My Page',
       url: '/',
       relPath: 'index.html',
+      children: [
+        {
+          h1: 'Empty because no sub headlines',
+          level: 1,
+          name: 'Empty because no sub headlines',
+          relPath: 'empty/index.html',
+          title: 'Welcome to the toc preset | My Page',
+          url: '/empty/',
+        },
+      ],
       tableOfContentsNode: treeModel.parse({
         name: 'Welcome to the table of contents preset',
         level: 1,

@@ -271,5 +271,23 @@ describe('presets', () => {
         '',
       ].join('\n'),
     );
+
+    const empty = await readOutput('empty/index.html');
+    expect(empty).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Welcome to the toc preset | My Page</title>',
+        '  </head>',
+        '  <body>',
+        '    <main>',
+        '      <h1>Empty because no sub headlines</h1>',
+        '      <h2>or no ids</h2>',
+        '    </main>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
   });
 });
