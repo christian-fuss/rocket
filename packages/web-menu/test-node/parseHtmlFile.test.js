@@ -10,6 +10,7 @@ describe('parseHtmlFile', () => {
     const metaData = await executeParse('fixtures/single-menu-header.html');
 
     expect(metaData).to.deep.equal({
+      __tocElements: [],
       fileString:
         '<html>\n  <head>\n    <title>Single Menu Header</title>\n  </head>\n  <body>\n    <header>\n      <html-include src="webmenu:header"></html-include>\n    </header>\n  </body>\n</html>\n',
       menus: [
@@ -35,6 +36,7 @@ describe('parseHtmlFile', () => {
     const metaData = await executeParse('fixtures/two-pages/index.html', { rootDir: 'fixtures' });
 
     expect(metaData).to.deep.equal({
+      __tocElements: [],
       title: 'Welcome to two pages | My Page',
       metaTitle: 'Home',
       h1: 'Welcome to two pages',

@@ -79,7 +79,15 @@ describe('buildTree', () => {
           relPath: 'about/index.html',
           level: 1,
           title: 'About Us',
-          children: [{ name: 'Career', url: '/about/career/', relPath: 'about/career/index.html', level: 2, title: 'Career' }],
+          children: [
+            {
+              name: 'Career',
+              url: '/about/career/',
+              relPath: 'about/career/index.html',
+              level: 2,
+              title: 'Career',
+            },
+          ],
         },
         {
           name: 'Components',
@@ -95,12 +103,91 @@ describe('buildTree', () => {
               level: 2,
               title: 'Button Blue',
             },
-            { name: 'Button Red', url: '/components/button-red/', relPath: 'components/button-red/index.html', level: 2, title: 'Button Red' },
+            {
+              name: 'Button Red',
+              url: '/components/button-red/',
+              relPath: 'components/button-red/index.html',
+              level: 2,
+              title: 'Button Red',
+            },
           ],
         },
       ],
     });
 
     expect(cleanup(tree)).to.deep.equal(nested);
+  });
+
+  it.only('adds info about table of content', async () => {
+    const tree = await executeBuildTree('fixtures/preset-tableOfContents');
+
+    const toc = treeModel.parse({
+      name: 'Welcome to the table of contents preset',
+      level: 0,
+      h1: 'Welcome to the table of contents preset',
+      title: 'Welcome to the toc preset | My Page',
+      url: '/',
+      relPath: 'index.html',
+      tableOfContentsNode: treeModel.parse({
+        name: 'Welcome to the table of contents preset',
+        level: 1,
+        url: '#welcome-to-the-table-of-contents-preset',
+        children: [
+          {
+            name: 'Every headline',
+            url: '#every-headline',
+            level: 2,
+            children: [
+              {
+                name: 'will be',
+                url: '#will-be',
+                level: 3,
+              },
+            ],
+          },
+          {
+            name: 'listed',
+            url: '#listed',
+            level: 2,
+            children: [
+              {
+                name: 'considering',
+                url: '#considering',
+                level: 3,
+                children: [
+                  {
+                    name: 'nesting',
+                    url: '#nesting',
+                    level: 4,
+                  },
+                  {
+                    name: 'and',
+                    url: '#and',
+                    level: 4,
+                  },
+                ],
+              },
+              {
+                name: 'returning',
+                url: '#returning',
+                level: 3,
+              },
+            ],
+          },
+          {
+            name: 'to the',
+            url: '#to-the',
+            level: 2,
+          },
+          {
+            name: 'main level',
+            url: '#main-level',
+            level: 2,
+          },
+        ],
+      }),
+    });
+
+    expect(cleanup(tree)).to.deep.equal(toc);
   });
 });

@@ -18,7 +18,7 @@ await parser.prepareWasm(saxWasmBuffer);
  * @param {Tag} data
  * @param {string} name
  */
- function getAttribute(data, name) {
+function getAttribute(data, name) {
   if (data.attributes) {
     const { attributes } = data;
     const foundIndex = attributes.findIndex(entry => entry.name.value === name);
@@ -47,11 +47,16 @@ function getCommentText(data) {
   return value.startsWith('-->') ? value.substring(3) : value;
 }
 
+function isHeadline(data) {
+  return data.name && data.name[0] === 'h' && ['1', '2', '3', '4', '5', '6'].includes(data.name[1]);
+}
+
 export function parseHtmlFile(htmlFilePath, options) {
   const relPath = path.relative(options.rootDir, htmlFilePath);
   const metaData = {
     menus: [],
-    relPath
+    relPath,
+    __tocElements: [],
   };
 
   parser.eventHandler = (ev, _data) => {
@@ -70,12 +75,23 @@ export function parseHtmlFile(htmlFilePath, options) {
         metaData.h1 = getText(data);
       }
 
+      if (isHeadline(data)) {
+        const id = getAttribute(data, 'id');
+        const text = getText(data);
+        if (id && text) {
+          metaData.__tocElements.push({
+            text,
+            id,
+            level: parseInt(data.name[1], 10),
+          });
+        }
+      }
+
       if (data.name === 'html-include') {
         const src = getAttribute(data, 'src');
         if (src && src.startsWith('webmenu:')) {
           const parts = src.split(':');
-          // console.log(data.toJSON());
-          metaData.menus.push({ name: parts[1],  start: data.openStart, end: data.closeEnd });
+          metaData.menus.push({ name: parts[1], start: data.openStart, end: data.closeEnd });
         }
       }
     }
