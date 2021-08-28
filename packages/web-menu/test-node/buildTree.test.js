@@ -1,9 +1,9 @@
 import chai from 'chai';
-import { executeBuildTree, cleanup } from './test-helpers.js';
+import { executeBuildTree, cleanup, modelComparatorFn } from './test-helpers.js';
 import TreeModel from 'tree-model';
 
 const { expect } = chai;
-const treeModel = new TreeModel({});
+const treeModel = new TreeModel({ modelComparatorFn});
 
 describe('buildTree', () => {
   it('builds a tree for one nested page', async () => {
@@ -31,7 +31,7 @@ describe('buildTree', () => {
       ],
       relPath: 'index.html',
       fileString:
-        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="web-menu-title" content="Home">\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
+        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
       children: [
         {
           name: 'About Us',

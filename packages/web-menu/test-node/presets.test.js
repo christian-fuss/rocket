@@ -88,7 +88,7 @@ describe('presets', () => {
         '<html>',
         '  <head>',
         '    <title>Preset Breadcrumb</title>',
-        '    <meta name="web-menu-title" content="Home" />',
+        '    <meta name="menu:link.text" content="Home" />',
         '  </head>',
         '  <body>',
         '    <nav aria-label="Breadcrumb" class="web-menu-breadcrumb">',

@@ -64,8 +64,11 @@ export function parseHtmlFile(htmlFilePath, options) {
       const data = /** @type {Tag} */ (/** @type {any} */ (_data));
       if (data.name === 'meta') {
         const metaName = getAttribute(data, 'name');
-        if (metaName === 'web-menu-title') {
+        if (metaName === 'menu:link.text') {
           metaData.metaTitle = getAttribute(data, 'content');
+        }
+        if (metaName === 'menu:order') {
+          metaData.order = parseInt(getAttribute(data, 'content'));
         }
       }
       if (data.name === 'title') {

@@ -1,11 +1,12 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
+import prettier from 'prettier';
+import { readFile } from 'fs/promises';
 
 import { buildTree } from '@web/menu';
 import { parseHtmlFile } from '../src/parseHtmlFile.js';
 import { WebMenuCli } from '../src/WebMenuCli.js';
-import prettier from 'prettier';
-import { readFile } from 'fs/promises';
+export { modelComparatorFn } from '../src/buildTree.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

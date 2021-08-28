@@ -29,7 +29,7 @@ describe('cli', () => {
         '<html>',
         '  <head>',
         '    <title>Welcome to two pages | My Page</title>',
-        '    <meta name="web-menu-title" content="Home" />',
+        '    <meta name="menu:link.text" content="Home" />',
         '  </head>',
         '  <body>',
         '    <header>',
@@ -64,7 +64,7 @@ describe('cli', () => {
         '<html>',
         '  <head>',
         '    <title>Welcome to two pages | My Page</title>',
-        '    <meta name="web-menu-title" content="Home" />',
+        '    <meta name="menu:link.text" content="Home" />',
         '  </head>',
         '  <body>',
         '    <header>',
@@ -133,7 +133,7 @@ describe('cli', () => {
     );
   });
 
-  it.skip('allows to order pages', async () => {
+  it('allows to order pages', async () => {
     const { readOutput } = await executeCli(
       {
         docsDir: 'fixtures/order',
@@ -152,6 +152,7 @@ describe('cli', () => {
         '    <nav aria-label="Header" class="web-menu-header">',
         '      <a href="/page-c/">Page C</a>',
         '      <a href="/page-b/">Page B</a>',
+        '      <a href="/page-b2/">Page B2</a>',
         '      <a href="/page-a/">Page A</a>',
         '    </nav>',
         '  </body>',

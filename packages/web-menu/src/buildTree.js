@@ -4,7 +4,15 @@ import TreeModel from 'tree-model';
 import path from 'path';
 import { parseHtmlFile } from './parseHtmlFile.js';
 
-const tree = new TreeModel();
+export function modelComparatorFn(a, b) {
+  const aOrder = a.order || 0;
+  const bOrder = b.order || 0;
+  return aOrder > bOrder;
+}
+
+const tree = new TreeModel({
+  modelComparatorFn,
+});
 
 let initialRootDir;
 
