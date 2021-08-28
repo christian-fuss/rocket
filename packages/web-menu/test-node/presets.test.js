@@ -146,23 +146,64 @@ describe('presets', () => {
     );
   });
 
-  it.skip('main', async () => {
+  it('main', async () => {
     const { readOutput } = await executeCli(
       { docsDir: 'fixtures/preset-main' },
       { captureLog: true },
     );
 
-    const buttonRed = await readOutput('components/content/accordion/index.html');
-    expect(buttonRed).to.equal(
+    const accordion = await readOutput('components/content/accordion/index.html');
+    expect(accordion).to.equal(
       [
         '<html>',
         '  <head>',
-        '    <title>Button Red</title>',
+        '    <title>Accordion</title>',
         '  </head>',
         '  <body>',
         '    <nav role="navigation" aria-label="main" class="web-menu-main">',
-        '      <a href="/about/">About</a>',
-        '      <a href="/components/">Components</a>',
+        '      <ul class="lvl-2">',
+        '        <li class="web-menu-active">',
+        '          <span>Content</span>',
+        '          <ul class="lvl-3">',
+        '            <li class="web-menu-current">',
+        '              <a href="/components/content/accordion/" aria-current="page">Accordion</a>',
+        '            </li>',
+        '          </ul>',
+        '        </li>',
+        '        <li>',
+        '          <span>Inputs</span>',
+        '          <ul class="lvl-3">',
+        '            <li><a href="/components/inputs/input-text/">Input Text</a></li>',
+        '            <li><a href="/components/inputs/textarea/">Textarea</a></li>',
+        '          </ul>',
+        '        </li>',
+        '      </ul>',
+        '    </nav>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+
+    const installCli = await readOutput('getting-started/setup/install-cli/index.html');
+    expect(installCli).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Install Cli</title>',
+        '  </head>',
+        '  <body>',
+        '    <nav role="navigation" aria-label="main" class="web-menu-main">',
+        '      <ul class="lvl-2">',
+        '        <li class="web-menu-active">',
+        '          <span>Setup</span>',
+        '          <ul class="lvl-3">',
+        '            <li class="web-menu-current">',
+        '              <a href="/getting-started/setup/install-cli/" aria-current="page">Install Cli</a>',
+        '            </li>',
+        '          </ul>',
+        '        </li>',
+        '      </ul>',
         '    </nav>',
         '  </body>',
         '</html>',

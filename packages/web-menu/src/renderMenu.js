@@ -34,7 +34,7 @@ function defaultLink({ node, currentNode }) {
 
 async function defaultRender({ list, ...options }) {
   return `
-    <nav role="navigation" aria-label="Main" class="web-menu">
+    <nav role="navigation" aria-label="Main" class="web-menu-main">
       ${list({ list, ...options })}
     </nav>
   `;
