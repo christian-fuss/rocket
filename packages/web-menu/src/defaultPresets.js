@@ -2,7 +2,7 @@ export const defaultPresets = {
   header: {
     render: ({ node, link, ...options }) => {
       return `
-        <nav role="navigation" aria-label="Header" class="web-menu-header">
+        <nav aria-label="Header" class="web-menu-header">
           ${node.children.map(child => link({ node: child, ...options })).join('\n')}
         </nav>
       `;
@@ -32,7 +32,7 @@ export const defaultPresets = {
     render: async ({ list, node, currentNode, ...options }) => {
       const activeLevelTwo = currentNode.getPath()[1] || node;
       return `
-        <nav role="navigation" aria-label="main" class="web-menu-main">
+        <nav aria-label="main" class="web-menu-main">
           ${list({ node: activeLevelTwo, list, currentNode, ...options })}
         </nav>
       `;
@@ -43,6 +43,16 @@ export const defaultPresets = {
       }
       const current = node === currentNode ? ' aria-current="page" ' : '';
       return `<a href="${node.model.url}"${current}>${node.model.name}</a>`;
+    },
+  },
+  tableOfContents: {
+    navLabel: 'Table of Contents',
+    render: async ({ list, currentNode, ...options }) => {
+      return `
+        <nav aria-label="Table of Contents" class="web-menu-tableOfContents">
+          ${list({ ...options, node: currentNode.model.tableOfContentsNode, list, currentNode, listTag: 'ol' })}
+        </nav>
+      `;
     },
   },
 };

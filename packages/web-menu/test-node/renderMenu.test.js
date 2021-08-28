@@ -26,7 +26,7 @@ describe('renderMenu', () => {
     });
     expect(format(htmlNavigation)).to.equal(
       [
-        '<nav role="navigation" aria-label="Main" class="web-menu-main">',
+        '<nav aria-label="Main" class="web-menu-main">',
         '  <ul class="lvl-1">',
         '    <li><a href="#">Home</a></li>',
         '    <li><a href="#">About</a></li>',
@@ -71,7 +71,7 @@ describe('renderMenu', () => {
     const htmlNavigation = await renderMenu({ node: components });
     expect(format(htmlNavigation)).to.equal(
       [
-        '<nav role="navigation" aria-label="Main" class="web-menu-main">',
+        '<nav aria-label="Main" class="web-menu-main">',
         '  <ul class="lvl-1">',
         '    <li><a href="#">Home</a></li>',
         '    <li>',
@@ -109,7 +109,7 @@ describe('renderMenu', () => {
     const htmlNavigation = await renderMenu({ node: componentsActive });
     expect(format(htmlNavigation)).to.equal(
       [
-        '<nav role="navigation" aria-label="Main" class="web-menu-main">',
+        '<nav aria-label="Main" class="web-menu-main">',
         '  <ul class="lvl-1">',
         '    <li><a href="#">Home</a></li>',
         '    <li class="web-menu-active">',

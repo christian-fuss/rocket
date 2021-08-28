@@ -118,7 +118,7 @@ describe('buildTree', () => {
     expect(cleanup(tree)).to.deep.equal(nested);
   });
 
-  it.only('adds info about table of content', async () => {
+  it('adds info about table of content', async () => {
     const tree = await executeBuildTree('fixtures/preset-tableOfContents');
 
     const toc = treeModel.parse({

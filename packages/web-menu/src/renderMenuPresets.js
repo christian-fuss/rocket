@@ -2,7 +2,7 @@
 //   header: {
 //     render: ({ node, link }) => {
 //       return `
-//         <nav role="navigation" aria-label="Header" class="web-menu-header">
+//         <nav aria-label="Header" class="web-menu-header">
 //           ${node.children.map(child => link({ node: child })).join('\n')}
 //         </nav>
 //       `;

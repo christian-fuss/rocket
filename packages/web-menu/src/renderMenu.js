@@ -1,13 +1,13 @@
-function defaultList({ node, listItem, childCondition, ...options }) {
+function defaultList({ node, listItem, childCondition, listTag, ...options }) {
   const output = [];
   const lvl = node.model.level;
 
   if (childCondition(node) && node.children) {
-    output.push(`<ul class="lvl-${lvl + 1}">`);
+    output.push(`<${listTag} class="lvl-${lvl + 1}">`);
     node.children.forEach(child => {
-      output.push(listItem({ node: child, listItem, childCondition, ...options }));
+      output.push(listItem({ ...options, node: child, listItem, childCondition, listTag }));
     });
-    output.push(`</ul>`);
+    output.push(`</${listTag}>`);
   }
 
   return output.join('\n');
@@ -34,7 +34,7 @@ function defaultLink({ node, currentNode }) {
 
 async function defaultRender({ list, ...options }) {
   return `
-    <nav role="navigation" aria-label="Main" class="web-menu-main">
+    <nav aria-label="Main" class="web-menu-main">
       ${list({ list, ...options })}
     </nav>
   `;
@@ -47,7 +47,8 @@ export async function renderMenu({
   listItem = defaultListItem,
   link = defaultLink,
   childCondition = () => true,
+  listTag = 'ul',
 } = {}) {
   const currentNode = node.first(entry => entry.model.current === true);
-  return render({ node, currentNode, list, listItem, link, childCondition });
+  return render({ node, currentNode, list, listItem, link, childCondition, listTag });
 }
