@@ -47,12 +47,28 @@ export const defaultPresets = {
   },
   tableOfContents: {
     navLabel: 'Table of Contents',
-    render: async ({ list, currentNode, ...options }) => {
-      return `
-        <nav aria-label="Table of Contents" class="web-menu-tableOfContents">
-          ${list({ ...options, node: currentNode.model.tableOfContentsNode, list, currentNode, listTag: 'ol' })}
-        </nav>
-      `;
+    navHeader: '<h2>Contents</h2>',
+    navWrapper: nav => `<aside>${nav}</aside>`,
+    render: async ({ list, currentNode, navHeader, navWrapper, ...options }) => {
+      if (
+        currentNode.model.tableOfContentsNode &&
+        currentNode.model.tableOfContentsNode.children.length > 0
+      ) {
+        const navString = `
+          ${navHeader}
+          <nav aria-label="Table of Contents" class="web-menu-tableOfContents">
+            ${list({
+              ...options,
+              node: currentNode.model.tableOfContentsNode,
+              list,
+              currentNode,
+              listTag: 'ol',
+            })}
+          </nav>
+        `;
+        return navWrapper(navString);
+      }
+      return '';
     },
   },
 };

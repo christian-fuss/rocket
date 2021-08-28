@@ -48,7 +48,8 @@ export async function renderMenu({
   link = defaultLink,
   childCondition = () => true,
   listTag = 'ul',
+  ...options
 } = {}) {
   const currentNode = node.first(entry => entry.model.current === true);
-  return render({ node, currentNode, list, listItem, link, childCondition, listTag });
+  return render({ ...options, node, currentNode, list, listItem, link, childCondition, listTag });
 }
