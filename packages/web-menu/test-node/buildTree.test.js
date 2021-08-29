@@ -13,7 +13,7 @@ describe('buildTree', () => {
       name: 'Home',
       level: 0,
       h1: 'Welcome to two pages',
-      metaTitle: 'Home',
+      metaLinkText: 'Home',
       title: 'Welcome to two pages | My Page',
       url: '/',
       menus: [
@@ -68,7 +68,7 @@ describe('buildTree', () => {
       name: 'Home',
       level: 0,
       h1: 'Welcome to two pages',
-      metaTitle: 'Home',
+      metaLinkText: 'Home',
       title: 'Welcome to two pages | My Page',
       url: '/',
       relPath: 'index.html',

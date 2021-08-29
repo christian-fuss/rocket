@@ -65,7 +65,7 @@ export function parseHtmlFile(htmlFilePath, options) {
       if (data.name === 'meta') {
         const metaName = getAttribute(data, 'name');
         if (metaName === 'menu:link.text') {
-          metaData.metaTitle = getAttribute(data, 'content');
+          metaData.metaLinkText = getAttribute(data, 'content');
         }
         if (metaName === 'menu:order') {
           metaData.order = parseInt(getAttribute(data, 'content'));
@@ -77,7 +77,7 @@ export function parseHtmlFile(htmlFilePath, options) {
       if (!metaData.title && data.name === 'title') {
         metaData.title = getText(data);
       }
-      if (data.name === 'h1') {
+      if (!metaData.h1 && data.name === 'h1') {
         metaData.h1 = getText(data);
       }
 
@@ -122,7 +122,7 @@ export function parseHtmlFile(htmlFilePath, options) {
     });
     readable.on('end', () => {
       parser.end();
-      metaData.name = metaData.metaTitle || metaData.h1 || metaData.title;
+      metaData.name = metaData.metaLinkText || metaData.h1 || metaData.title;
       metaData.fileString = Buffer.concat(chunks).toString('utf8');
 
       resolve(metaData);

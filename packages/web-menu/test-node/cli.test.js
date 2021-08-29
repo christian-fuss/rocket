@@ -133,7 +133,7 @@ describe('cli', () => {
     );
   });
 
-  it('can order pages via <meta name="menu:order" value="10" />', async () => {
+  it('can order pages via <meta name="menu:order" content="10" />', async () => {
     const { readOutput } = await executeCli(
       {
         docsDir: 'fixtures/order',
@@ -162,7 +162,7 @@ describe('cli', () => {
     );
   });
 
-  it('can exclude pages via <meta name="menu:exclude" value="true" />', async () => {
+  it('can exclude pages via <meta name="menu:exclude" content="true" />', async () => {
     const { readOutput } = await executeCli(
       {
         docsDir: 'fixtures/exclude',

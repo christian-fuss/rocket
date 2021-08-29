@@ -38,7 +38,7 @@ describe('parseHtmlFile', () => {
     expect(metaData).to.deep.equal({
       __tocElements: [],
       title: 'Welcome to two pages | My Page',
-      metaTitle: 'Home',
+      metaLinkText: 'Home',
       h1: 'Welcome to two pages',
       name: 'Home',
       fileString:
