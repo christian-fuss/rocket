@@ -133,7 +133,7 @@ describe('cli', () => {
     );
   });
 
-  it('allows to order pages', async () => {
+  it('can order pages via <meta name="menu:order" value="10" />', async () => {
     const { readOutput } = await executeCli(
       {
         docsDir: 'fixtures/order',
@@ -160,5 +160,31 @@ describe('cli', () => {
         '',
       ].join('\n'),
     );
-  });  
+  });
+
+  it('can exclude pages via <meta name="menu:exclude" value="true" />', async () => {
+    const { readOutput } = await executeCli(
+      {
+        docsDir: 'fixtures/exclude',
+      },
+      { captureLog: true },
+    );
+
+    const index = await readOutput('index.html');
+    expect(index).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Welcome to two pages | My Page</title>',
+        '  </head>',
+        '  <body>',
+        '    <nav aria-label="Header" class="web-menu-header">',
+        '      <a href="/contact/">Contact</a>',
+        '    </nav>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+  });    
 });

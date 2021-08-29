@@ -70,8 +70,11 @@ export function parseHtmlFile(htmlFilePath, options) {
         if (metaName === 'menu:order') {
           metaData.order = parseInt(getAttribute(data, 'content'));
         }
+        if (metaName === 'menu:exclude') {
+          metaData.exclude = getAttribute(data, 'content') !== 'false';
+        }
       }
-      if (data.name === 'title') {
+      if (!metaData.title && data.name === 'title') {
         metaData.title = getText(data);
       }
       if (data.name === 'h1') {

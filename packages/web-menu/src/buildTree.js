@@ -64,13 +64,15 @@ export async function buildTree(
     const indexFilePath = path.join(rootDir, 'index.html');
     if (indexFilePath && fs.existsSync(indexFilePath)) {
       const metaData = await parseHtmlFile(indexFilePath, { rootDir: initialRootDir });
-      const treeEntry = tree.parse({ level, url, ...processTocElements(metaData) });
-      if (currentNode) {
-        currentNode.addChild(treeEntry);
-      } else {
-        currentNode = treeEntry;
+      if (!metaData.exclude) {
+        const treeEntry = tree.parse({ level, url, ...processTocElements(metaData) });
+        if (currentNode) {
+          currentNode.addChild(treeEntry);
+        } else {
+          currentNode = treeEntry;
+        }
+        await buildTree(rootDir, treeEntry, { ...options, level: level + 1, url, mode: 'scan' });
       }
-      await buildTree(rootDir, treeEntry, { ...options, level: level + 1, url, mode: 'scan' });
     }
   }
 

@@ -59,4 +59,9 @@ describe('parseHtmlFile', () => {
       relPath: 'two-pages/index.html',
     });
   });
+
+  it('only consider the first title tag (should be the one in the head)', async () => {
+    const metaData = await executeParse('fixtures/ignore-title-in-body.html');
+    expect(metaData.title).to.equal('Ignore title in body')
+  });
 });
