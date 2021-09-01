@@ -39,10 +39,27 @@ export const defaultPresets = {
     },
     link: ({ node, currentNode }) => {
       if (node.children.length > 0) {
-        return `<span>${node.model.name}</span>`;
+        const lvl = node.model.level;
+        return lvl < 3 ? `<span>${node.model.name}</span>` : '';
       }
       const current = node === currentNode ? ' aria-current="page" ' : '';
       return `<a href="${node.model.url}"${current}>${node.model.name}</a>`;
+    },
+    list: options => {
+      const { node, listItem, childCondition, listTag, currentNode } = options;
+      const open = currentNode.getPath().includes(node) ? 'open' : '';
+
+      if (childCondition(node) && node.children) {
+        const lvl = node.model.level;
+        return `
+          ${lvl > 2 ? `<details ${open}><summary>${node.model.name}</summary>` : ''}
+            <${listTag} class="lvl-${lvl + 1}">
+              ${node.children.map(child => listItem({ ...options, node: child })).join('')}
+            </${listTag}>
+          ${lvl > 2 ? `</details>` : ''}
+        `;
+      }
+      return '';
     },
   },
   tableOfContents: {

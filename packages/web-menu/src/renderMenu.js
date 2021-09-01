@@ -1,16 +1,15 @@
-function defaultList({ node, listItem, childCondition, listTag, ...options }) {
-  const output = [];
-  const lvl = node.model.level;
+function defaultList(options) {
+  const { node, listItem, childCondition, listTag } = options;
 
   if (childCondition(node) && node.children) {
-    output.push(`<${listTag} class="lvl-${lvl + 1}">`);
-    node.children.forEach(child => {
-      output.push(listItem({ ...options, node: child, listItem, childCondition, listTag }));
-    });
-    output.push(`</${listTag}>`);
+    const lvl = node.model.level;
+    return `
+      <${listTag} class="lvl-${lvl + 1}">
+        ${node.children.map(child => listItem({ ...options, node: child })).join('')}
+      </${listTag}>
+    `
   }
-
-  return output.join('\n');
+  return '';
 }
 
 function defaultListItem({ node, list, link, ...options }) {
