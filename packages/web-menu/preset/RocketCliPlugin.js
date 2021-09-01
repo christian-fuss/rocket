@@ -4,7 +4,7 @@
 
 import { WebMenuCli } from '@web/menu';
 
-export class RocketMenu {
+export class RocketCliPlugin {
   static pluginName = 'RocketMenu';
   commands = ['start', 'build', 'lint'];
 

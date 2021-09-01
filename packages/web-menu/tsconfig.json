@@ -13,6 +13,7 @@
   },
   "references": [],
   "include": [
+    "preset",
     "src",
     "*.js",
     "types"

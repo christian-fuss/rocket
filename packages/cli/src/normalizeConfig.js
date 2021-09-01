@@ -15,7 +15,6 @@ import { readConfig } from '@web/config-loader';
 import { RocketStart } from './RocketStart.js';
 import { RocketBuild } from './RocketBuild.js';
 import { RocketLint } from './RocketLint.js';
-import { RocketMenu } from './RocketMenu.js';
 
 import { webMenu } from '@web/menu';
 
@@ -113,6 +112,7 @@ export async function normalizeConfig(inConfig) {
           ...fileConfig.devServer,
         },
         imagePresets: config.imagePresets,
+        presets: [...config.presets, ...fileConfig.presets],
       };
       if (fileConfig.imagePresets && fileConfig.imagePresets.responsive) {
         config.imagePresets.responsive = {
@@ -178,7 +178,6 @@ export async function normalizeConfig(inConfig) {
 
   /** @type {MetaPlugin[]} */
   let pluginsMeta = [
-    { name: 'RocketMenu', plugin: RocketMenu },
     { name: 'RocketStart', plugin: RocketStart },
     { name: 'RocketBuild', plugin: RocketBuild },
     { name: 'RocketLint', plugin: RocketLint },
