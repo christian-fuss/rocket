@@ -1,42 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { processContentWithTitle } = require('@rocket/core/title');
 const { createSocialImage: defaultCreateSocialImage } = require('./createSocialImage.cjs');
 const { getComputedConfig } = require('./computedConfig.cjs');
 const { executeSetupFunctions } = require('plugins-manager');
-
-function titleMetaPlugin() {
-  return async data => {
-    if (data.titleMeta) {
-      return data.titleMeta;
-    }
-    let text = await fs.promises.readFile(data.page.inputPath);
-    text = text.toString();
-    const titleMetaFromContent = processContentWithTitle(text, 'md');
-    if (titleMetaFromContent) {
-      return titleMetaFromContent;
-    }
-    return {};
-  };
-}
-
-function titlePlugin() {
-  return async data => {
-    if (data.title) {
-      return data.title;
-    }
-    return data.titleMeta?.title;
-  };
-}
-
-function eleventyNavigationPlugin() {
-  return async data => {
-    if (data.eleventyNavigation) {
-      return data.eleventyNavigation;
-    }
-    return data.titleMeta?.eleventyNavigation;
-  };
-}
 
 function sectionPlugin() {
   return async data => {
@@ -155,17 +121,46 @@ function joiningBlocksPlugin(rocketConfig) {
   };
 }
 
+/**
+ * Removes the `xx--` prefix that is used for ordering
+ *
+ * @returns {string}
+ */
+function permalinkPlugin() {
+  return data => {
+    if (data.permalink) {
+      return data.permalink;
+    }
+    let filePath = data.page.filePathStem.replace(/[0-9]+--/g, '');
+    return filePath.endsWith('index') ? `${filePath}.html` : `${filePath}/index.html`;
+  };
+}
+
+/**
+ * Extracts the `xx--` order number from the current file name
+ *
+ * @returns {Number}
+ */
+function menuOrderPlugin() {
+  return data => {
+    const matches = data.page.fileSlug.match(/([0-9]+)--/);
+    if (matches) {
+      return parseInt(matches[1]);
+    }
+    return 0;
+  };
+}
+
 function generateEleventyComputed() {
   const rocketConfig = getComputedConfig();
 
   let metaPlugins = [
-    { name: 'titleMeta', plugin: titleMetaPlugin },
-    { name: 'title', plugin: titlePlugin },
-    { name: 'eleventyNavigation', plugin: eleventyNavigationPlugin },
     { name: 'section', plugin: sectionPlugin },
     { name: 'socialMediaImage', plugin: socialMediaImagePlugin, options: { rocketConfig } },
     { name: '_joiningBlocks', plugin: joiningBlocksPlugin, options: rocketConfig },
     { name: 'layout', plugin: layoutPlugin },
+    { name: 'permalink', plugin: permalinkPlugin },
+    { name: 'menuOrder', plugin: menuOrderPlugin },
   ];
 
   const finalMetaPlugins = executeSetupFunctions(
