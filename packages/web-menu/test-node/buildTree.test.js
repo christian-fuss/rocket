@@ -61,6 +61,61 @@ describe('buildTree', () => {
     expect(tree).to.deep.equal(twoLevels);
   });
 
+  it('builds a tree and treats named html files as children of the index', async () => {
+    const tree = await executeBuildTree('fixtures/build-named-html-files');
+
+    const twoLevels = treeModel.parse({
+      name: 'Home',
+      level: 0,
+      h1: 'Welcome to two pages',
+      metaLinkText: 'Home',
+      title: 'Welcome to two pages | My Page',
+      url: '/',
+      menus: [
+        {
+          end: {
+            character: 53,
+            line: 7,
+          },
+          name: 'header',
+          start: {
+            character: 6,
+            line: 7,
+          },
+        },
+      ],
+      relPath: 'index.html',
+      fileString:
+        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
+      children: [
+        {
+          name: 'About Us',
+          url: '/about.html',
+          level: 1,
+          title: 'About Us',
+          menus: [
+            {
+              end: {
+                character: 53,
+                line: 6,
+              },
+              name: 'header',
+              start: {
+                character: 6,
+                line: 6,
+              },
+            },
+          ],
+          relPath: 'about.html',
+          fileString:
+            '<html>\n  <head>\n    <title>About Us</title>\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      Content\n    </main>\n  </body>\n</html>\n',
+        },
+      ],
+    });
+
+    expect(tree).to.deep.equal(twoLevels);
+  });  
+
   it('builds a tree for multiple nested page', async () => {
     const tree = await executeBuildTree('fixtures/nested-pages');
 

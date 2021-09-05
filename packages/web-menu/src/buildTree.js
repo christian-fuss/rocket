@@ -63,6 +63,39 @@ function processTocElements(metaData) {
 }
 
 /**
+ * 
+ * @param {object} process
+ * @param {string} process.filePath
+ * @param {string} process.rootDir
+ * @param {TreeModel.Node<Page>} [process.currentNode]
+ * @param {boolean} [process.recursive]
+ * @param {object} options
+ * @param {string} [options.mode]
+ * @param {number} [options.level]
+ * @param {string} [options.url]
+ * @returns 
+ */
+async function processFile({ filePath, rootDir, currentNode, recursive = false }, options) {
+  if (filePath && fs.existsSync(filePath)) {
+    const { level = 0, url = '/' } = options;
+
+    const metaData = await parseHtmlFile(filePath, { rootDir: initialRootDir });
+    if (!metaData.exclude) {
+      const treeEntry = tree.parse({ level, url, ...processTocElements(metaData) });
+      if (currentNode) {
+        currentNode.addChild(treeEntry);
+      } else {
+        currentNode = treeEntry;
+      }
+      if (recursive) {
+        await buildTree(rootDir, treeEntry, { ...options, level: level + 1, mode: 'scan' });
+      }
+    }
+  }
+  return currentNode;
+}
+
+/**
  * @param {string} inRootDir
  * @param {TreeModel.Node<Page>} [node]
  * @param {object} [options]
@@ -74,8 +107,9 @@ function processTocElements(metaData) {
 export async function buildTree(
   inRootDir,
   node,
-  { mode = 'indexFile', level = 0, url = '/', ...options } = {},
+  options = {}
 ) {
+  const { mode = 'indexFile', level = 0, url = '/' } = options;
   const rootDir = path.resolve(inRootDir);
   if (level === 0) {
     initialRootDir = rootDir;
@@ -84,18 +118,7 @@ export async function buildTree(
 
   if (mode === 'indexFile') {
     const indexFilePath = path.join(rootDir, 'index.html');
-    if (indexFilePath && fs.existsSync(indexFilePath)) {
-      const metaData = await parseHtmlFile(indexFilePath, { rootDir: initialRootDir });
-      if (!metaData.exclude) {
-        const treeEntry = tree.parse({ level, url, ...processTocElements(metaData) });
-        if (currentNode) {
-          currentNode.addChild(treeEntry);
-        } else {
-          currentNode = treeEntry;
-        }
-        await buildTree(rootDir, treeEntry, { ...options, level: level + 1, url, mode: 'scan' });
-      }
-    }
+    currentNode = await processFile({ filePath: indexFilePath, rootDir, currentNode, recursive: true }, options);
   }
 
   if (mode === 'scan') {
@@ -111,10 +134,8 @@ export async function buildTree(
           mode: 'indexFile',
         });
       } else if (entry.name !== 'index.html') {
-        // const metaData = await parseHtmlFile(currentPath);
-        // const treeEntry = tree.parse({ name: fileName, path: currentPath, ...metaData });
-        // node.addChild(treeEntry);
-        // console.log({ filePath });
+        const filePath = path.join(rootDir, entry.name);
+        currentNode = await processFile({ filePath, rootDir, currentNode }, { ...options, url: `${url}${entry.name}` });
       }
     }
   }

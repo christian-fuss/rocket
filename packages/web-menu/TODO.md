@@ -1,0 +1,3 @@
+- Use [Colorette](https://www.npmjs.com/package/colorette) instead of chalk
+- Fork tree-model and "modernice it" es6, esm, types
+- Evaluate [Commander](https://www.npmjs.com/package/commander) instead of command-line-args
