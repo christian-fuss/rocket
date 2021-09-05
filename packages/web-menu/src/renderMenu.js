@@ -1,3 +1,9 @@
+/** @typedef {import('../types/main').PresetFn} PresetFn */
+
+/**
+ * @param {PresetFn} options
+ * @returns 
+ */
 function defaultList(options) {
   const { node, listItem, childCondition, listTag } = options;
 
@@ -12,6 +18,10 @@ function defaultList(options) {
   return '';
 }
 
+/**
+ * @param {PresetFn} options 
+ * @returns {string}
+ */
 function defaultListItem({ node, list, link, ...options }) {
   const passOn = { node, list, link, ...options };
 
@@ -26,11 +36,19 @@ function defaultListItem({ node, list, link, ...options }) {
   return `<li${cssClasses}>${link(passOn)}${node.children.length > 0 ? list(passOn) : ''}</li>`;
 }
 
+/**
+ * @param {PresetFn} options 
+ * @returns {string}
+ */
 function defaultLink({ node, currentNode }) {
   const current = node === currentNode ? ' aria-current="page" ' : '';
   return `<a href="${node.model.url}"${current}>${node.model.name}</a>`;
 }
 
+/**
+ * @param {PresetFn} options 
+ * @returns {Promise<string>}
+ */
 async function defaultRender({ list, ...options }) {
   return `
     <nav aria-label="Main" class="web-menu-main">
@@ -39,6 +57,10 @@ async function defaultRender({ list, ...options }) {
   `;
 }
 
+/**
+ * @param {PresetFn} options 
+ * @returns {Promise<string>}
+ */
 export async function renderMenu({
   node,
   render = defaultRender,

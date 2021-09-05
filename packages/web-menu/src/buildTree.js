@@ -4,6 +4,14 @@ import TreeModel from 'tree-model';
 import path from 'path';
 import { parseHtmlFile } from './parseHtmlFile.js';
 
+/** @typedef {import('../types/main').Page} Page */
+/** @typedef {import('../types/main').ParseMetaData} ParseMetaData */
+
+/**
+ * @param {Page} a
+ * @param {Page} b
+ * @returns
+ */
 export function modelComparatorFn(a, b) {
   const aOrder = a.order || 0;
   const bOrder = b.order || 0;
@@ -14,12 +22,17 @@ const tree = new TreeModel({
   modelComparatorFn,
 });
 
+/** @type {string} */
 let initialRootDir;
 
+/**
+ * @param {ParseMetaData} metaData
+ * @returns {ParseMetaData}
+ */
 function processTocElements(metaData) {
   let node;
   let currentLevel;
-  if (metaData.__tocElements.length > 0) {
+  if (metaData.__tocElements && metaData.__tocElements.length > 0) {
     for (const tocElement of metaData.__tocElements) {
       const { id, text, level } = tocElement;
       const child = tree.parse({
@@ -49,6 +62,15 @@ function processTocElements(metaData) {
   return metaData;
 }
 
+/**
+ * @param {string} inRootDir
+ * @param {TreeModel.Node<Page>} [node]
+ * @param {object} [options]
+ * @param {string} [options.mode]
+ * @param {number} [options.level]
+ * @param {string} [options.url]
+ * @returns
+ */
 export async function buildTree(
   inRootDir,
   node,

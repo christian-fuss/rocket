@@ -2,6 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import saxWasm from 'sax-wasm';
 import { createRequire } from 'module';
+import { getAttribute, getText } from './sax-helpers.js';
+
+/** @typedef {import('sax-wasm').Text} Text */
+/** @typedef {import('sax-wasm').Tag} Tag */
+/** @typedef {import('sax-wasm').Position} Position */
+/** @typedef {import('../types/main').ParseMetaData} ParseMetaData */
 
 const require = createRequire(import.meta.url);
 const { SaxEventType, SAXParser } = saxWasm;
@@ -15,44 +21,23 @@ const parser = new SAXParser(SaxEventType.CloseTag | SaxEventType.Comment, strea
 await parser.prepareWasm(saxWasmBuffer);
 
 /**
- * @param {Tag} data
- * @param {string} name
+ * @param {Tag} data 
+ * @returns {boolean}
  */
-function getAttribute(data, name) {
-  if (data.attributes) {
-    const { attributes } = data;
-    const foundIndex = attributes.findIndex(entry => entry.name.value === name);
-    if (foundIndex !== -1) {
-      return attributes[foundIndex].value.value;
-    }
-  }
-  return null;
+function isHeadline(data) {
+  return data.name ? data.name[0] === 'h' && ['1', '2', '3', '4', '5', '6'].includes(data.name[1]) : false;
 }
 
 /**
- * @param {Tag} data
+ * 
+ * @param {string} htmlFilePath 
+ * @param {object} options
+ * @param {string} options.rootDir
+ * @returns 
  */
-function getText(data) {
-  if (data.textNodes) {
-    return data.textNodes.map(textNode => textNode.value).join('');
-  }
-  return null;
-}
-
-function getCommentText(data) {
-  // NOTE: we NEED to access data internal value so sax-wasm does not reuse it's value
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const tmp = data.start.line + data.end.line;
-  let value = data.value.trim();
-  return value.startsWith('-->') ? value.substring(3) : value;
-}
-
-function isHeadline(data) {
-  return data.name && data.name[0] === 'h' && ['1', '2', '3', '4', '5', '6'].includes(data.name[1]);
-}
-
 export function parseHtmlFile(htmlFilePath, options) {
   const relPath = path.relative(options.rootDir, htmlFilePath);
+  /** @type {ParseMetaData} */
   const metaData = {
     menus: [],
     relPath,
@@ -68,7 +53,7 @@ export function parseHtmlFile(htmlFilePath, options) {
           metaData.metaLinkText = getAttribute(data, 'content');
         }
         if (metaName === 'menu:order') {
-          metaData.order = parseInt(getAttribute(data, 'content'));
+          metaData.order = parseInt(getAttribute(data, 'content') || '0');
         }
         if (metaName === 'menu:exclude') {
           metaData.exclude = getAttribute(data, 'content') !== 'false';
@@ -84,7 +69,7 @@ export function parseHtmlFile(htmlFilePath, options) {
       if (isHeadline(data)) {
         const id = getAttribute(data, 'id');
         const text = getText(data);
-        if (id && text) {
+        if (id && text && metaData.__tocElements) {
           metaData.__tocElements.push({
             text,
             id,
@@ -101,22 +86,13 @@ export function parseHtmlFile(htmlFilePath, options) {
         }
       }
     }
-
-    // if (ev === SaxEventType.Comment) {
-    //   const data = /** @type {Text} */ (/** @type {any} */ (_data));
-    //   const commentText = getCommentText(data);
-    //   if (commentText.startsWith('[INSERT-WEB-MENU-PRESET-WITH-NAME="')) {
-    //     const parts = commentText.split('"');
-    //     metaData.menus.push({ name: parts[1],  start: data.start, end: data.end });
-    //   }
-    // }
   };
 
   return new Promise(resolve => {
+    /** @type {Array<Buffer>} */
     const chunks = [];
     const readable = fs.createReadStream(htmlFilePath, streamOptions);
     readable.on('data', chunk => {
-      // @ts-expect-error
       parser.write(chunk);
       chunks.push(Buffer.from(chunk));
     });
