@@ -26,13 +26,17 @@ export interface Error {
   usage: Usage[];
 }
 
-interface Options {
-  ignoreLinkPatterns: string[] | null;
+export interface Preset {
+  render: () => string;
+  list: () => string;
+  listItem: () => string;
+  link: () => string;
+  childCondition: () => boolean;
+  listTag: string;
 }
 
-export interface CheckHtmlLinksCliOptions {
-  printOnError: boolean;
-  rootDir: string;
-  ignoreLinkPatterns: string[] | null;
-  continueOnError: boolean;
+export interface WebMenuCliOptions {
+  configFile: string;
+  docsDir: string;
+  presets?: Preset[];
 }
