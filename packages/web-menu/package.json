@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "A fast low dependency checker of html links/references",
+  "description": "A fast low dependency menu renderer for html sites",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,19 +30,14 @@
     "*.js",
     "dist",
     "dist-types",
+    "preset",
     "src"
   ],
   "dependencies": {
     "chalk": "^4.0.0",
     "command-line-args": "^5.1.1",
-    "glob": "^7.0.0",
-    "minimatch": "^3.0.4",
     "sax-wasm": "^2.0.0",
-    "slash": "^3.0.0",
     "tree-model": "^1.0.7"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.0.0"
   },
   "types": "dist-types/index.d.ts"
 }

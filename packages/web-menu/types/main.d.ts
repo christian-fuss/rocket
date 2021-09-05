@@ -39,15 +39,15 @@ export interface ParseMetaData {
 //
 
 export interface Preset {
-  render: (options: PresetFn) => string;
-  list: (options: PresetFn) => string;
-  listItem: (options: PresetFn) => string;
-  link: (options: PresetFn) => string;
+  render: (options: renderFn) => string;
+  list: (options: renderFn) => string;
+  listItem: (options: renderFn) => string;
+  link: (options: renderFn) => string;
   childCondition: (node: Node<Page>) => boolean;
   listTag: string;
 }
 
-export interface PresetFn extends Preset {
+export interface renderFn extends Preset {
   node: Node<Page>;
   currentNode: Node<Page>;
 }

@@ -1,4 +1,4 @@
-/** @typedef {import('../types/main').PresetFn} PresetFn */
+/** @typedef {import('../types/main').renderFn} PresetFn */
 
 /**
  * @param {PresetFn} options

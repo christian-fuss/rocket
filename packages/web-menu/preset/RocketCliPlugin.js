@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-/** @typedef {import('../types/main').RocketCliOptions} RocketCliOptions */
+/** @typedef {import('@rocket/cli').RocketCliOptions} RocketCliOptions */
 
 import { WebMenuCli } from '@web/menu';
 

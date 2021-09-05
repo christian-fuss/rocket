@@ -2,6 +2,13 @@ import { defaultPresets } from './defaultPresets.js';
 import { renderMenu } from './renderMenu.js';
 import { replaceBetween } from './sax-helpers.js';
 
+/** @typedef {import('../types/main').Page} Page */
+/** @typedef {import('tree-model/types').Node<Page>} NodeOfPage */
+
+/**
+ * @param {NodeOfPage} tree
+ * @param {NodeOfPage} node
+ */
 function setCurrent(tree, node) {
   const currentNode = tree.first(entry => entry.model.relPath === node.model.relPath);
   if (currentNode) {
@@ -12,6 +19,9 @@ function setCurrent(tree, node) {
   }
 }
 
+/**
+ * @param {NodeOfPage} tree
+ */
 function removeCurrent(tree) {
   const currentNode = tree.first(entry => entry.model.current === true);
   if (currentNode) {
@@ -22,6 +32,9 @@ function removeCurrent(tree) {
   }
 }
 
+/**
+ * @param {NodeOfPage} tree
+ */
 export async function insertMenus(tree, options = {}) {
   let counter = 0;
   const presets = { ...defaultPresets, ...options.presets };

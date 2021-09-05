@@ -1,5 +1,11 @@
+/** @typedef {import('../types/main').renderFn} renderFn */
+
 export const defaultPresets = {
   header: {
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
     render: ({ node, link, ...options }) => {
       return `
         <nav aria-label="Header" class="web-menu-header">
@@ -9,10 +15,18 @@ export const defaultPresets = {
     },
   },
   headerWithoutNav: {
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
     render: ({ node, link, ...options }) =>
       node.children.map(child => link({ node: child, ...options })).join('\n'),
   },
   breadcrumb: {
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
     render: ({ node, listItem, ...options }) => {
       const current = node.first(node => node.model.current === true);
       const nodePath = current.getPath();
@@ -29,6 +43,10 @@ export const defaultPresets = {
   },
   main: {
     label: 'Main',
+    /**
+     * @param {renderFn} options
+     * @returns {Promise<string>}
+     */
     render: async ({ list, node, currentNode, ...options }) => {
       const activeLevelTwo = currentNode.getPath()[1] || node;
       return `
@@ -37,6 +55,10 @@ export const defaultPresets = {
         </nav>
       `;
     },
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
     link: ({ node, currentNode }) => {
       if (node.children.length > 0) {
         const lvl = node.model.level;
@@ -45,6 +67,10 @@ export const defaultPresets = {
       const current = node === currentNode ? ' aria-current="page" ' : '';
       return `<a href="${node.model.url}"${current}>${node.model.name}</a>`;
     },
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
     list: options => {
       const { node, listItem, childCondition, listTag, currentNode } = options;
       const open = currentNode.getPath().includes(node) ? 'open' : '';
@@ -65,7 +91,12 @@ export const defaultPresets = {
   tableOfContents: {
     navLabel: 'Table of Contents',
     navHeader: '<h2>Contents</h2>',
+    /** @param {string} nav */
     navWrapper: nav => `<aside>${nav}</aside>`,
+    /**
+     * @param {renderFn} options
+     * @returns {Promise<string>}
+     */
     render: async ({ list, currentNode, navHeader, navLabel, navWrapper, ...options }) => {
       if (
         currentNode.model.tableOfContentsNode &&
