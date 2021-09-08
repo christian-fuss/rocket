@@ -40,6 +40,7 @@ Run it in parallel?
 
 ## Usage as as ???
 
+- astro
 - next.js
 - hugo
 - gatsby
@@ -47,8 +48,44 @@ Run it in parallel?
 - nuxt
 - hexo
 - docusaurus
-- ???
 
+## Configuration file
+
+You can put configurations at
+
+- `config/web-menu.js`
+- `config/web-menu.mjs`
+- `web-menu.config.js`
+- `web-menu.config.mjs`
+
+```js
+export default {
+  docsDir: 'my-menu/',
+  outputDir:
+}
+```
+
+<details>
+  <summary>Types of the config file</summary>
+  <div>
+    TODO: inline types 
+  </div>
+</details>
+
+## Add your own menu type
+
+```js
+export default {
+  docsDir: 'my-menu/',
+  presets: {
+    myMenu: {
+      async render() {
+        return '--- My Menu ---';
+      },
+    },
+  },
+};
+```
 
 ## Menu types
 
@@ -104,4 +141,24 @@ Run it in parallel?
 
 5. **tableOfContents**
 
-   - lists the 
+   - lists the headlines of the current page in a hierarchy
+   - nested ol/li list
+
+   ```html
+   <aside>
+     <h2>Contents</h2>
+     <nav aria-label="Table of Contents" class="web-menu-tableOfContents">
+       <ol class="lvl-2">
+         <li>
+           <a href="#every-headline">Every headline</a>
+           <ol class="lvl-3">
+             <li><a href="#will-be">will be</a></li>
+           </ol>
+         </li>
+         <li>
+           <a href="#listed">listed</a>
+         </li>
+       </ol>
+     </nav>
+   </aside>
+   ```

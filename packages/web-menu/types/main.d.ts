@@ -52,9 +52,14 @@ export interface renderFn extends Preset {
   currentNode: Node<Page>;
 }
 
-export interface WebMenuCliOptions {
-  configFile: string;
+export interface ConfigOptions {
   docsDir: string;
   outputDir?: string;
-  presets?: Preset[];
+  presets?: {
+    [key: string]: Preset
+  }
+}
+
+export interface WebMenuCliOptions extends ConfigOptions {
+  configFile: string;
 }
