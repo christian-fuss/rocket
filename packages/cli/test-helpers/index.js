@@ -181,7 +181,7 @@ export async function executeUpgrade(pathToConfig) {
   });
   await cli.setup();
 
-  // restore from backup if available
+  // restore from backup if available - in cases the test did stop in the middle
   if (cli.config._inputDirCwdRelative) {
     const backupDir = path.join(cli.config._inputDirCwdRelative, '..', 'docs_backup');
     if (existsSync(backupDir)) {

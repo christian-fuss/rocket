@@ -20,6 +20,13 @@ describe('Upgrade System', () => {
     if (cli?.cleanup) {
       await cli.cleanup();
     }
+    if (cli?.config._inputDirCwdRelative) {
+      const backupDir = path.join(cli.config._inputDirCwdRelative, '..', 'docs_backup');
+      if (existsSync(backupDir)) {
+        await remove(cli.config._inputDirCwdRelative);
+        await move(backupDir, cli.config._inputDirCwdRelative);
+      }
+    }
   });
 
   it.only('2021-09-menu', async () => {
