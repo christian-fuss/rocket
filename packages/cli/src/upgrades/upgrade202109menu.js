@@ -2,16 +2,6 @@ import { readFile } from 'fs/promises';
 
 /** @typedef {import('@rocket/cli/types/upgrade').upgrade} upgrade */
 
-function applyFolderRenames(relPath, modifications) {
-  let newRelPath = relPath;
-  for (const modification of modifications) {
-    if (newRelPath.startsWith(modification.from)) {
-      newRelPath = modification.to + newRelPath.slice(modification.from.length);
-    }
-  }
-  return newRelPath;
-}
-
 /**
  *
  * @param {upgrade} options
@@ -37,24 +27,13 @@ export async function upgrade202109menu({ files, folderRenames }) {
           const dirParts = [...pathParts];
           dirParts.pop();
           updatedFolderRenames.push({ from: originDirParts.join('/'), to: dirParts.join('/') });
+        } else {
+          files[i].updatedName = `${order}--${fileData.name}`;
         }
       }
     }
     i += 1;
   }
-
-  // const orderedFolderRenames = [...updatedFolderRenames].sort((a, b) => { return a.from.split('/').length - b.from.split('/').length; });
-
-  // // do modifications
-  // // folderRenames.reverse();
-  // i = 0;
-  // for (const fileData of files) {
-  //   const modifiedPath = applyFolderRenames(fileData.relPath, updatedFolderRenames);
-  //   if (modifiedPath !== fileData.relPath) {
-  //     files[i].updatedRelPath = modifiedPath;
-  //   }
-  //   i += 1;
-  // }
 
   return { files, folderRenames: updatedFolderRenames };
 }

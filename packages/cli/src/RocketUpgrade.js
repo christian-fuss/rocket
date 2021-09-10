@@ -14,6 +14,8 @@ const exec = promisify(execCallback);
 
 /** @typedef {import('../types/main').RocketCliOptions} RocketCliOptions */
 /** @typedef {import('../types/upgrade').UpgradeFile} UpgradeFile */
+/** @typedef {import('../types/upgrade').FolderRename} FolderRename */
+/** @typedef {import('../types/upgrade').upgrade} upgrade */
 
 /**
  * @param {UpgradeFile} options
@@ -46,6 +48,7 @@ async function getAllFiles(options) {
       const data = {
         path: currentPath,
         relPath,
+        name: path.basename(relPath),
         extName: path.extname(relPath),
       };
       if (!filter(data)) {
@@ -66,12 +69,13 @@ async function getAllFiles(options) {
 
 /**
  * 
- * @param {object} options
- * @param {UpgradeFile[]} options.files
+ * @param {upgrade} options
  */
 async function updateFileSystem({ files, folderRenames }) {
   for (const renameObj of folderRenames) {
-    await rename(renameObj.fromAbsolute, renameObj.toAbsolute);
+    if (renameObj.fromAbsolute && renameObj.toAbsolute) {
+      await rename(renameObj.fromAbsolute, renameObj.toAbsolute);
+    }
   }
   for (const file of files) {
   //   if (file.path) {
@@ -85,6 +89,11 @@ async function updateFileSystem({ files, folderRenames }) {
   }
 }
 
+/**
+ * @param {string} relPath 
+ * @param {FolderRename[]} folderRenames 
+ * @returns {string}
+ */
 function applyFolderRenames(relPath, folderRenames) {
   let newRelPath = relPath;
   for (const renameObj of folderRenames) {
@@ -134,6 +143,7 @@ export class RocketUpgrade {
       rootDir: this.config._inputDirCwdRelative,
       currentDir: this.config._inputDirCwdRelative,
     });
+    /** @type {FolderRename[]} */
     let folderRenames = [];
 
     const upgrade = await upgrade202109menu({ files, folderRenames });
@@ -144,10 +154,20 @@ export class RocketUpgrade {
       return b.from.split('/').length - a.from.split('/').length;
     });
 
-    // adjust relPath to consider renamed folders
+
+    // adjust relPath if there is a new filename
     let i = 0;
     for (const fileData of files) {
-      const modifiedPath = applyFolderRenames(fileData.relPath, orderedFolderRenames);
+      if (fileData.updatedName) {
+        files[i].updatedRelPath = `${path.dirname(fileData.relPath)}/${fileData.updatedName}`;
+      }
+      i += 1;
+    }
+
+    // adjust relPath to consider renamed folders
+    i = 0;
+    for (const fileData of files) {
+      const modifiedPath = applyFolderRenames(fileData.updatedRelPath || fileData.relPath, orderedFolderRenames);
       if (modifiedPath !== fileData.relPath) {
         files[i].updatedRelPath = modifiedPath;
       }

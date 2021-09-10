@@ -35,5 +35,8 @@ describe('Upgrade System', () => {
     expect(run.outputExists('index.md')).to.be.true;
     expect(run.outputExists('10--components/index.md')).to.be.true;
     expect((await run.readOutput('10--components/index.md'))).to.equal('# Components\n');
+
+    expect(run.outputExists('10--components/10--content/20--accordion/10--overview.md')).to.be.true;
+    expect((await run.readOutput('10--components/10--content/20--accordion/10--overview.md'))).to.equal('# Overview\n');
   });
 });
