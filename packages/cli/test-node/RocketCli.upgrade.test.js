@@ -32,11 +32,12 @@ describe('Upgrade System', () => {
   it.only('2021-09-menu', async () => {
     const run = await executeUpgrade('fixtures-upgrade/2021-09-menu/rocket.config.js');
     cli = run.cli;
-    expect(run.outputExists('index.md')).to.be.true;
-    expect(run.outputExists('10--components/index.md')).to.be.true;
-    expect((await run.readOutput('10--components/index.md'))).to.equal('# Components\n');
+    expect(run.fileExists('index.md')).to.be.true;
+    expect(run.fileExists('10--components/index.md')).to.be.true;
+    expect((await run.readFile('10--components/index.md'))).to.equal('# Components\n');
 
-    expect(run.outputExists('10--components/10--content/20--accordion/10--overview.md')).to.be.true;
-    expect((await run.readOutput('10--components/10--content/20--accordion/10--overview.md'))).to.equal('# Overview\n');
+    expect(run.fileExists('10--components/10--content/20--accordion/overview.md')).to.be.false;
+    expect(run.fileExists('10--components/10--content/20--accordion/10--overview.md')).to.be.true;
+    expect((await run.readFile('10--components/10--content/20--accordion/10--overview.md'))).to.equal('# Overview\n');
   });
 });

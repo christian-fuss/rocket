@@ -192,11 +192,11 @@ export async function executeUpgrade(pathToConfig) {
   await cli.run();
   return {
     cli,
-    outputExists: fileName => {
+    fileExists: fileName => {
       const outputDir = cli.config._inputDirCwdRelative;
       return fs.existsSync(path.join(outputDir, fileName));
     },
-    readOutput: async (fileName, options = {}) => {
+    readFile: async (fileName, options = {}) => {
       // TODO: use readOutput once it's changed to read full file paths
       const filePath = path.join(cli.config._inputDirCwdRelative, fileName);
       const text = await fs.promises.readFile(filePath);

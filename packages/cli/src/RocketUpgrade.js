@@ -72,17 +72,21 @@ async function getAllFiles(options) {
  * @param {upgrade} options
  */
 async function updateFileSystem({ files, folderRenames }) {
+  // rename files while not touching folders
+  for (const file of files) {
+    if (file.updatedName) {
+      const newPath = path.join(path.dirname(file.path), file.updatedName);
+      await rename(file.path, newPath);
+    }
+  }
+  // rename folders
   for (const renameObj of folderRenames) {
     if (renameObj.fromAbsolute && renameObj.toAbsolute) {
       await rename(renameObj.fromAbsolute, renameObj.toAbsolute);
     }
   }
+  // update file content
   for (const file of files) {
-  //   if (file.path) {
-  //     // const dirName = path.dirname(file.updatedPath);
-  //     // await mkdir(dirName, { recursive: true });
-  //     await rename(file.path, file.updatedPath);
-  //   }
     if (file.updatedContent) {
       await writeFile(file.updatedPath || file.path, file.updatedContent);
     }
