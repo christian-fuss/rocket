@@ -133,6 +133,7 @@ export async function execute(cli, configFileDir) {
   cli.config.devServer.open = false;
   cli.config.devServer.port = 8080;
   cli.config.watch = false;
+  cli.config.testing = true;
   cli.config.outputDir = path.join(configFileDir, '__output');
   await cli.run();
   return cli;
@@ -171,6 +172,27 @@ export async function executeLint(pathToConfig) {
   });
   await execute(cli, path.dirname(configFile));
   return cli;
+}
+
+export async function executeUpgrade(pathToConfig) {
+  const configFile = path.join(fixtureDir, pathToConfig.split('/').join(path.sep));
+  const cli = new RocketCli({
+    argv: ['upgrade', '--config-file', configFile],
+  });
+  await execute(cli, path.dirname(configFile));
+  return {
+    cli,
+    outputExists: fileName => {
+      const outputDir = cli.config._inputDirCwdRelative;
+      return fs.existsSync(path.join(outputDir, fileName));
+    },
+    readOutput: async (fileName, options = {}) => {
+      // TODO: use readOutput once it's changed to read full file paths
+      const filePath = path.join(cli.config._inputDirCwdRelative, fileName);
+      const text = await fs.promises.readFile(filePath);
+      return text.toString();
+    }
+  };
 }
 
 export function trimWhiteSpace(inString) {
