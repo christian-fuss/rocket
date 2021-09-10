@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { existsSync, fstat } from 'fs';
-import { mkdir, readdir, rename, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
+import { readdir, rename, writeFile } from 'fs/promises';
 import path from 'path';
 
 import { promisify } from 'util';
@@ -65,7 +65,9 @@ async function getAllFiles(options) {
 }
 
 /**
- * @param {UpgradeFile[]} files
+ * 
+ * @param {object} options
+ * @param {UpgradeFile[]} options.files
  */
 async function updateFileSystem({ files, folderRenames }) {
   for (const renameObj of folderRenames) {
@@ -78,17 +80,16 @@ async function updateFileSystem({ files, folderRenames }) {
   //     await rename(file.path, file.updatedPath);
   //   }
     if (file.updatedContent) {
-      console.log({ file });
-      await writeFile(file.path, file.updatedContent);
+      await writeFile(file.updatedPath || file.path, file.updatedContent);
     }
   }
 }
 
-function applyFolderRenames(relPath, modifications) {
+function applyFolderRenames(relPath, folderRenames) {
   let newRelPath = relPath;
-  for (const modification of modifications) {
-    if (newRelPath.startsWith(modification.from)) {
-      newRelPath = modification.to + newRelPath.slice(modification.from.length);
+  for (const renameObj of folderRenames) {
+    if (newRelPath.startsWith(renameObj.from)) {
+      newRelPath = renameObj.to + newRelPath.slice(renameObj.from.length);
     }
   }
   return newRelPath;
@@ -143,7 +144,7 @@ export class RocketUpgrade {
       return b.from.split('/').length - a.from.split('/').length;
     });
 
-    // adjust relPath with folder renames
+    // adjust relPath to consider renamed folders
     let i = 0;
     for (const fileData of files) {
       const modifiedPath = applyFolderRenames(fileData.relPath, orderedFolderRenames);
@@ -162,7 +163,7 @@ export class RocketUpgrade {
       i += 1;
     }
 
-
+    // create absolute paths for renames
     i = 0;
     for (const renameObj of folderRenames) {
       folderRenames[i].fromAbsolute = path.join(this.config._inputDirCwdRelative, renameObj.from);
@@ -170,31 +171,9 @@ export class RocketUpgrade {
       i += 1;
     }
 
-    console.log({ files, orderedFolderRenames });
-
-
     await updateFileSystem({
       files,
       folderRenames: orderedFolderRenames
     });
-
-    // console.log({ updatedFiles });
-
-    // console.log(this.config)
-
-    // const entries = await readdir(this.config._inputDirCwdRelative, { withFileTypes: true });
-    // for (const entry of entries) {
-    //   const { name: folderName } = entry;
-    //   const currentPath = path.join(this.config._inputDirCwdRelative, folderName);
-
-    //   if (entry.isDirectory()) {
-    //     //
-    //   } else {
-    //     const relPath = path.relative(this.config._inputDirCwdRelative, currentPath);
-    //     const outputPath = path.join(this.config.outputDir, relPath);
-    //     console.log({ currentPath, relPath, outputPath });
-    //   }
-    // }
-    // this.config?.inputDir
   }
 }

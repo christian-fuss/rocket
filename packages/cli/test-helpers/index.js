@@ -2,9 +2,10 @@ import chai from 'chai';
 import { RocketCli } from '../src/RocketCli.js';
 import path from 'path';
 import globby from 'globby';
-import fs from 'fs-extra';
+import fs, { move, remove } from 'fs-extra';
 import prettier from 'prettier';
 import { fileURLToPath } from 'url';
+import { existsSync } from 'fs';
 
 const { expect } = chai;
 
@@ -133,7 +134,6 @@ export async function execute(cli, configFileDir) {
   cli.config.devServer.open = false;
   cli.config.devServer.port = 8080;
   cli.config.watch = false;
-  cli.config.testing = true;
   cli.config.outputDir = path.join(configFileDir, '__output');
   await cli.run();
   return cli;
@@ -179,7 +179,17 @@ export async function executeUpgrade(pathToConfig) {
   const cli = new RocketCli({
     argv: ['upgrade', '--config-file', configFile],
   });
-  await execute(cli, path.dirname(configFile));
+  await cli.setup();
+
+  // restore from backup if available
+  if (cli.config._inputDirCwdRelative) {
+    const backupDir = path.join(cli.config._inputDirCwdRelative, '..', 'docs_backup');
+    if (existsSync(backupDir)) {
+      await remove(cli.config._inputDirCwdRelative);
+      await move(backupDir, cli.config._inputDirCwdRelative);
+    }
+  }
+  await cli.run();
   return {
     cli,
     outputExists: fileName => {
