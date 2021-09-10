@@ -43,9 +43,14 @@ export async function upgrade202109menu({ files, folderRenames }) {
           }
         }
 
-        if (fmObj.data.title) {
+        if (!title && fmObj.data.title) {
           fmObj.content = `\n# ${fmObj.data.title}\n${fmObj.content}`;
           delete fmObj.data.title;
+        }
+
+        if (fmObj.data.eleventyExcludeFromCollections) {
+          fmObj.data.menuExclude = true;
+          delete fmObj.data.eleventyExcludeFromCollections;
         }
 
         if (Object.keys(fmObj.data).length > 0) {
