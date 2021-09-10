@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chalk from 'chalk';
 import path from 'path';
-import { executeStart, executeUpgrade, readStartOutput, setFixtureDir } from '@rocket/cli/test-helpers';
+import { executeUpgrade, setFixtureDir } from '@rocket/cli/test-helpers';
 import { move, remove } from 'fs-extra';
 import { existsSync } from 'fs';
 
@@ -33,11 +33,24 @@ describe('Upgrade System', () => {
     const run = await executeUpgrade('fixtures-upgrade/2021-09-menu/rocket.config.js');
     cli = run.cli;
     expect(run.fileExists('index.md')).to.be.true;
-    expect(run.fileExists('10--components/index.md')).to.be.true;
-    expect((await run.readFile('10--components/index.md'))).to.equal('# Components\n');
+    expect(run.fileExists('31--components/index.md')).to.be.true;
+    expect(await run.readFile('31--components/index.md')).to.equal(
+      [
+        '---',
+        'menuLinkText: Components',
+        '---',
+        '',
+        '# Component Directory',
+        '',
+        'Here you get started.',
+        '',
+      ].join('\n'),
+    );
 
-    expect(run.fileExists('10--components/10--content/20--accordion/overview.md')).to.be.false;
-    expect(run.fileExists('10--components/10--content/20--accordion/10--overview.md')).to.be.true;
-    expect((await run.readFile('10--components/10--content/20--accordion/10--overview.md'))).to.equal('# Overview\n');
+    expect(run.fileExists('31--components/10--content/20--accordion/overview.md')).to.be.false;
+    expect(run.fileExists('31--components/10--content/20--accordion/10--overview.md')).to.be.true;
+    expect(await run.readFile('31--components/10--content/20--accordion/10--overview.md')).to.equal(
+      '# Overview\n',
+    );
   });
 });

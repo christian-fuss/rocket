@@ -1,4 +1,5 @@
 import { readFile } from 'fs/promises';
+import matter from 'gray-matter';
 
 /** @typedef {import('@rocket/cli/types/upgrade').upgrade} upgrade */
 
@@ -13,12 +14,45 @@ export async function upgrade202109menu({ files, folderRenames }) {
   for (const fileData of files) {
     if (fileData.extName === '.md') {
       const content = (await readFile(fileData.path)).toString();
+      const lines = content.split('\n');
       const { title, lineNumber } = extractTitle(content);
+      let order = 0;
       if (title && lineNumber >= 0) {
-        const { title: newTitle, order } = parseTitle(title);
-        const lines = content.split('\n');
-        lines[lineNumber] = `# ${newTitle}`;
+        const parsedTitle = parseTitle(title);
+        order = parsedTitle.order;
+        lines[lineNumber] = `# ${parsedTitle.title}`;
         files[i].updatedContent = lines.join('\n');
+      }
+      if (lines[0] === '---') {
+        const fmObj = matter(content);
+        if (fmObj.data.eleventyNavigation) {
+          const eleventyNav = fmObj.data.eleventyNavigation;
+          if (eleventyNav.order) {
+            order = eleventyNav.order;
+            delete fmObj.data.eleventyNavigation.order;
+          }
+          if (eleventyNav.key) {
+            fmObj.data.menuLinkText = eleventyNav.key;
+            delete fmObj.data.eleventyNavigation.key;
+          }
+          if (eleventyNav.parent) {
+            delete fmObj.data.eleventyNavigation.parent;
+          }
+          if (Object.keys(eleventyNav).length === 0) {
+            delete fmObj.data.eleventyNavigation;
+          }
+        }
+
+        if (fmObj.data.title) {
+          fmObj.content = `\n# ${fmObj.data.title}\n${fmObj.content}`;
+          delete fmObj.data.title;
+        }
+
+        if (Object.keys(fmObj.data).length > 0) {
+          files[i].updatedContent = matter.stringify(fmObj.content, fmObj.data);
+        }
+      }
+      if (order !== 0) {
         if (fileData.relPath.toLowerCase().endsWith('index.md')) {
           const pathParts = fileData.relPath.split('/');
           const originDirParts = [...pathParts];
@@ -72,7 +106,7 @@ export function extractTitle(content, engine = 'md') {
  * Foo >> Bar ||10
  *
  * @param {string} inTitle
- * @return {EleventyPage}
+ * @return {{ title: string, order: number }}
  */
 export function parseTitle(inTitle) {
   if (typeof inTitle !== 'string') {
