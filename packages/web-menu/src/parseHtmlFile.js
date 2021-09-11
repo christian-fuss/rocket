@@ -94,11 +94,10 @@ export function parseHtmlFile(htmlFilePath, options) {
         }
       }
 
-      if (data.name === 'html-include') {
-        const src = getAttribute(data, 'src');
-        if (src && src.startsWith('menu:')) {
-          const parts = src.split(':');
-          metaData.menus.push({ name: parts[1], start: data.openStart, end: data.closeEnd });
+      if (data.name === 'web-menu') {
+        const preset = getAttribute(data, 'preset');
+        if (preset) {
+          metaData.menus.push({ name: preset, start: data.openEnd, end: data.closeStart });
         }
       }
     }

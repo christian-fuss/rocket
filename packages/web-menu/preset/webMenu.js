@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const eleventyPluginWebMenu = {
   configFunction: eleventyConfig => {
     eleventyConfig.addFilter('menu', function (menuName) {
-      return `<html-include src="menu:${menuName}"></html-include>`;
+      return `<web-menu preset="${menuName}"></web-menu>`;
     });
   },
 };

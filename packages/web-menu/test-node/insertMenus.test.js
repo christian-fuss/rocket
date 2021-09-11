@@ -10,16 +10,16 @@ describe('insertMenus', () => {
   it('will adjust the fileString of the tree', async () => {
     const onePage = treeModel.parse({
       fileString:
-        '<html>\n  <head>\n    <title>Single Menu Header</title>\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n  </body>\n</html>\n',
+        '<html>\n  <head>\n    <title>Single Menu Header</title>\n  </head>\n  <body>\n    <header>\n      <web-menu preset="header"></web-menu>\n    </header>\n  </body>\n</html>\n',
       menus: [
         {
           end: {
-            character: 53,
+            character: 32,
             line: 6,
           },
           name: 'header',
           start: {
-            character: 7,
+            character: 32,
             line: 6,
           },
         },
@@ -43,11 +43,13 @@ describe('insertMenus', () => {
       '  </head>',
       '  <body>',
       '    <header>',
-      '      <nav aria-label="Header" class="web-menu-header">',
-      '        <a href="#">Getting Started</a>',
-      '        <a href="#">Components</a>',
-      '        <a href="#">Blog</a>',
-      '      </nav>',
+      '      <web-menu preset="header">',
+      '        <nav aria-label="Header" class="web-menu-header">',
+      '          <a href="#">Getting Started</a>',
+      '          <a href="#">Components</a>',
+      '          <a href="#">Blog</a>',
+      '        </nav>',
+      '      </web-menu>',
       '    </header>',
       '  </body>',
       '</html>',

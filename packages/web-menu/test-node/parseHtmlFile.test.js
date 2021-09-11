@@ -12,16 +12,16 @@ describe('parseHtmlFile', () => {
     expect(metaData).to.deep.equal({
       __tocElements: [],
       fileString:
-        '<html>\n  <head>\n    <title>Single Menu Header</title>\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n  </body>\n</html>\n',
+        '<html>\n  <head>\n    <title>Single Menu Header</title>\n  </head>\n  <body>\n    <header>\n      <web-menu preset="header"></web-menu>\n    </header>\n  </body>\n</html>\n',
       menus: [
         {
           end: {
-            character: 53,
+            character: 32,
             line: 6,
           },
           name: 'header',
           start: {
-            character: 6,
+            character: 32,
             line: 6,
           },
         },
@@ -42,16 +42,16 @@ describe('parseHtmlFile', () => {
       h1: 'Welcome to two pages',
       name: 'Home',
       fileString:
-        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
+        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <web-menu preset="header"></web-menu>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
       menus: [
         {
           end: {
-            character: 53,
+            character: 32,
             line: 7,
           },
           name: 'header',
           start: {
-            character: 6,
+            character: 32,
             line: 7,
           },
         },

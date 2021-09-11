@@ -19,19 +19,19 @@ describe('buildTree', () => {
       menus: [
         {
           end: {
-            character: 53,
+            character: 32,
             line: 7,
           },
           name: 'header',
           start: {
-            character: 6,
+            character: 32,
             line: 7,
           },
         },
       ],
       relPath: 'index.html',
       fileString:
-        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
+        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <web-menu preset="header"></web-menu>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
       children: [
         {
           name: 'About Us',
@@ -41,19 +41,19 @@ describe('buildTree', () => {
           menus: [
             {
               end: {
-                character: 53,
+                character: 32,
                 line: 6,
               },
               name: 'header',
               start: {
-                character: 6,
+                character: 32,
                 line: 6,
               },
             },
           ],
           relPath: 'about/index.html',
           fileString:
-            '<html>\n  <head>\n    <title>About Us</title>\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      Content\n    </main>\n  </body>\n</html>\n',
+            '<html>\n  <head>\n    <title>About Us</title>\n  </head>\n  <body>\n    <header>\n      <web-menu preset="header"></web-menu>\n    </header>\n    <main>\n      Content\n    </main>\n  </body>\n</html>\n',
         },
       ],
     });
@@ -74,19 +74,19 @@ describe('buildTree', () => {
       menus: [
         {
           end: {
-            character: 53,
+            character: 32,
             line: 7,
           },
           name: 'header',
           start: {
-            character: 6,
+            character: 32,
             line: 7,
           },
         },
       ],
       relPath: 'index.html',
       fileString:
-        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
+        '<html>\n  <head>\n    <title>Welcome to two pages | My Page</title>\n    <meta name="menu:link.text" content="Home">\n  </head>\n  <body>\n    <header>\n      <web-menu preset="header"></web-menu>\n    </header>\n    <main>\n      <h1>Welcome to two pages</h1>\n      Content\n    </main>\n  </body>\n</html>\n',
       children: [
         {
           name: 'About Us',
@@ -96,19 +96,19 @@ describe('buildTree', () => {
           menus: [
             {
               end: {
-                character: 53,
+                character: 32,
                 line: 6,
               },
               name: 'header',
               start: {
-                character: 6,
+                character: 32,
                 line: 6,
               },
             },
           ],
           relPath: 'about.html',
           fileString:
-            '<html>\n  <head>\n    <title>About Us</title>\n  </head>\n  <body>\n    <header>\n      <html-include src="menu:header"></html-include>\n    </header>\n    <main>\n      Content\n    </main>\n  </body>\n</html>\n',
+            '<html>\n  <head>\n    <title>About Us</title>\n  </head>\n  <body>\n    <header>\n      <web-menu preset="header"></web-menu>\n    </header>\n    <main>\n      Content\n    </main>\n  </body>\n</html>\n',
         },
       ],
     });
