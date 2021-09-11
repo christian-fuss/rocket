@@ -119,4 +119,41 @@ export const defaultPresets = {
       return '';
     },
   },
+  blog: {
+    ordering: 'descending',
+    renderDescription: node => {
+      if (node.model.subHeading) {
+        return `
+          <div class="description">
+            <a href="${node.model.url}" tabindex="-1">
+              <p>${node.model.subHeading}</p>
+            </a>
+          </div>        
+        `;
+      }
+      return '';
+    },
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
+    render: ({ currentNode, renderDescription }) => {
+      return `
+        <div class="web-menu-blog">
+          ${currentNode.children
+            .map(
+              child => `
+                <article class="post">
+                  <a href="${child.model.url}">
+                    <h2>${child.model.name}</h2>
+                  </a>
+                  ${renderDescription(child)}
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      `;
+    },
+  },
 };

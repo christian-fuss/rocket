@@ -146,6 +146,67 @@ describe('presets', () => {
     );
   });
 
+  it('blog', async () => {
+    const { readOutput } = await executeCli(
+      { docsDir: 'fixtures/preset-blog' },
+      { captureLog: true },
+    );
+
+    const blog = await readOutput('blog/index.html');
+    expect(blog).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Blog Overview</title>',
+        '  </head>',
+        '  <body>',
+        '    <div class="web-menu-blog">',
+        '      <article class="post">',
+        // '        <div class="cover">',
+        // '          <a href="/blog/new-year-new-challenge/" tabindex="-1" aria-hidden="true">',
+        // '            <figure>',
+        // '              <img ../>',
+        // '            </figure>',
+        // '          </a>',
+        // '        </div>',
+        '        <a href="/blog/new-year-new-challenge/">',
+        '          <h2>New year means new challenges</h2>',
+        '        </a>',
+        // '        <div class="authors">',
+        // '          [[ authors image + name each linked ]]',
+        // '          <time>Updated: Sep 6, 2021</time>',
+        // '        </div>',
+        '',
+        '        <div class="description">',
+        '          <a href="/blog/new-year-new-challenge/" tabindex="-1">',
+        '            <p>It is a new year and there are new challenges awaiting.</p>',
+        '          </a>',
+        // '          <div class="tags">',
+        // '            <a href="/blog/tags/capabilities/">Capabilities</a> ',
+        // '            <a href="/blog/tags/games/">Games</a>',
+        // '          </div>',
+        '        </div>',
+        '      </article>',
+        '',
+        '      <article class="post">',
+        '        <a href="/blog/comparing-apple-to-oranges/">',
+        '          <h2>Comparing apple to oranges</h2>',
+        '        </a>',
+        '',
+        '        <div class="description">',
+        '          <a href="/blog/comparing-apple-to-oranges/" tabindex="-1">',
+        '            <p>Say you have an apple and you then find an orange - what would you do?</p>',
+        '          </a>',
+        '        </div>',
+        '      </article>',
+        '    </div>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+  });
+
   it('nestedWithCategoryHeading', async () => {
     const { readOutput } = await executeCli(
       { docsDir: 'fixtures/preset-main' },

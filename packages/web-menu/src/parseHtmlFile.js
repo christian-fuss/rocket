@@ -52,6 +52,22 @@ export function parseHtmlFile(htmlFilePath, options) {
         if (metaName === 'menu:link.text') {
           metaData.metaLinkText = getAttribute(data, 'content');
         }
+        if (metaName === 'menu:page.releaseDateTime') {
+          const dtString = getAttribute(data, 'content');
+          if (dtString) {
+            const date = new Date(dtString);
+            const year = date.getFullYear();
+            const month = date.getMonth().toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0'); // getDay === week of the day
+            const hours  = date.getHours().toString().padStart(2, '0');
+            const minutes  = date.getMinutes().toString().padStart(2, '0');
+            metaData.order = parseInt(`-${year}${month}${day}${hours}${minutes}`);
+            metaData.releaseDateTime = dtString;
+          }
+        }
+        if (metaName === 'menu:page.subHeading') {
+          metaData.subHeading = getAttribute(data, 'content');
+        }
         if (metaName === 'menu:order') {
           metaData.order = parseInt(getAttribute(data, 'content') || '0');
         }
