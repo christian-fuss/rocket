@@ -44,7 +44,7 @@ describe('insertMenus', () => {
       '  <body>',
       '    <header>',
       '      <web-menu preset="header">',
-      '        <nav aria-label="Header" class="web-menu-header">',
+      '        <nav aria-label="Header">',
       '          <a href="#">Getting Started</a>',
       '          <a href="#">Components</a>',
       '          <a href="#">Blog</a>',

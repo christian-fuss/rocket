@@ -8,7 +8,7 @@ export const defaultPresets = {
      */
     render: ({ node, link, ...options }) => {
       return `
-        <nav aria-label="Header" class="web-menu-header">
+        <nav aria-label="Header">
           ${node.children.map(child => link({ node: child, ...options })).join('\n')}
         </nav>
       `;
@@ -33,7 +33,7 @@ export const defaultPresets = {
       const breadcrumbItem = node =>
         listItem({ node, listItem, ...options, childCondition: () => false });
       return `
-        <nav aria-label="Breadcrumb" class="web-menu-breadcrumb">
+        <nav aria-label="Breadcrumb">
           <ol>
             ${nodePath.map(node => breadcrumbItem(node)).join('\n')}
           </ol>
@@ -50,7 +50,7 @@ export const defaultPresets = {
     render: async ({ list, node, currentNode, ...options }) => {
       const activeLevelTwo = currentNode.getPath()[1] || node;
       return `
-        <nav aria-label="main" class="web-menu-main">
+        <nav aria-label="main">
           ${list({ node: activeLevelTwo, list, currentNode, ...options })}
         </nav>
       `;
@@ -104,7 +104,7 @@ export const defaultPresets = {
       ) {
         const navString = `
           ${navHeader}
-          <nav aria-label="${navLabel}" class="web-menu-tableOfContents">
+          <nav aria-label="${navLabel}">
             ${list({
               ...options,
               node: currentNode.model.tableOfContentsNode,
@@ -120,7 +120,6 @@ export const defaultPresets = {
     },
   },
   blog: {
-    ordering: 'descending',
     renderDescription: node => {
       if (node.model.subHeading) {
         return `

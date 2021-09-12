@@ -1,6 +1,5 @@
 MUST HAVE:
 
-- get rid of the css class attribute in the nav `<nav aria-label="Breadcrumb" class="web-menu-breadcrumb">`
 - proper naming for all the presets 😅
 
 NICE TO HAVE:

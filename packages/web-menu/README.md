@@ -95,7 +95,7 @@ export default {
    - flat list of links
 
    ```html
-   <nav aria-label="Header" class="web-menu-header">
+   <nav aria-label="Header">
      <a href="/about/">About</a>
      <a href="/components/">Components</a>
    </nav>
@@ -107,7 +107,7 @@ export default {
    - nested ul/li list
 
    ```html
-   <nav aria-label="Header" class="web-menu-header">
+   <nav aria-label="Header">
      <ul>
        <li><a href="/about/">About</a></li>
      </ul>
@@ -128,7 +128,7 @@ export default {
    - flat ol/li list
 
    ```html
-   <nav aria-label="Breadcrumb" class="web-menu-breadcrumb">
+   <nav aria-label="Breadcrumb">
      <ol>
        <li class="web-menu-active"><a href="/">Home</a></li>
        <li class="web-menu-active"><a href="/components/">Components</a></li>
@@ -147,7 +147,7 @@ export default {
    ```html
    <aside>
      <h2>Contents</h2>
-     <nav aria-label="Table of Contents" class="web-menu-tableOfContents">
+     <nav aria-label="Table of Contents">
        <ol class="lvl-2">
          <li>
            <a href="#every-headline">Every headline</a>
