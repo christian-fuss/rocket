@@ -128,7 +128,7 @@ export const defaultPresets = {
             <a href="${node.model.url}" tabindex="-1">
               <p>${node.model.subHeading}</p>
             </a>
-          </div>        
+          </div>
         `;
       }
       return '';
@@ -154,6 +154,60 @@ export const defaultPresets = {
             .join('')}
         </div>
       `;
+    },
+  },
+  next: {
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
+    render: ({ currentNode }) => {
+      const parents = currentNode.getPath();
+      let next;
+      if (parents.length > 1) {
+        const parent = parents[parents.length - 2];
+        next = parent.children[currentNode.getIndex() + 1];
+      }
+      if (!next) {
+        if (currentNode.hasChildren()) {
+          next = currentNode.children[0];
+        }
+      }
+      if (next) {
+        return `
+          <a href="${next.model.url}">
+            <span>next</span>
+            <span>${next.model.name}</span>
+          </a>
+        `;
+      }
+      return '';
+    },
+  },
+  previous: {
+    /**
+     * @param {renderFn} options
+     * @returns {string}
+     */
+    render: ({ currentNode }) => {
+      const parents = currentNode.getPath();
+      let previous;
+      if (parents.length > 1) {
+        const parent = parents[parents.length - 2];
+        previous = parent.children[currentNode.getIndex() - 1];
+        if (!previous) {
+          previous = parent;
+        }
+      }
+      if (previous) {
+        return `
+          <a href="${previous.model.url}">
+            <span>previous</span>
+            <span>${previous.model.name}</span>
+          </a>
+        `;
+      }
+      return '';
     },
   },
 };

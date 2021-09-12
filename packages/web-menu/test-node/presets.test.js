@@ -160,6 +160,107 @@ describe('presets', () => {
     );
   });
 
+  it('next-previous', async () => {
+    const { readOutput } = await executeCli(
+      { docsDir: 'fixtures/preset-next-previous' },
+      { captureLog: true },
+    );
+
+    const index = await readOutput('index.html');
+    expect(index).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Preset Next/Previous</title>',
+        '  </head>',
+        '  <body>',
+        '    <web-menu preset="previous"></web-menu>',
+        '    <web-menu preset="next">',
+        '      <a href="/first.html">',
+        '        <span>next</span>',
+        '        <span>First</span>',
+        '      </a>',
+        '    </web-menu>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+
+    const first = await readOutput('first.html');
+    expect(first).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>First</title>',
+        '  </head>',
+        '  <body>',
+        '    <web-menu preset="previous">',
+        '      <a href="/">',
+        '        <span>previous</span>',
+        '        <span>Preset Next/Previous</span>',
+        '      </a>',
+        '    </web-menu>',
+        '    <web-menu preset="next">',
+        '      <a href="/second.html">',
+        '        <span>next</span>',
+        '        <span>Second</span>',
+        '      </a>',
+        '    </web-menu>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+
+    const second = await readOutput('second.html');
+    expect(second).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Second</title>',
+        '  </head>',
+        '  <body>',
+        '    <web-menu preset="previous">',
+        '      <a href="/first.html">',
+        '        <span>previous</span>',
+        '        <span>First</span>',
+        '      </a>',
+        '    </web-menu>',
+        '    <web-menu preset="next">',
+        '      <a href="/third.html">',
+        '        <span>next</span>',
+        '        <span>Third</span>',
+        '      </a>',
+        '    </web-menu>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+
+    const third = await readOutput('third.html');
+    expect(third).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Third</title>',
+        '  </head>',
+        '  <body>',
+        '    <web-menu preset="previous">',
+        '      <a href="/second.html">',
+        '        <span>previous</span>',
+        '        <span>Second</span>',
+        '      </a>',
+        '    </web-menu>',
+        '    <web-menu preset="next"></web-menu>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
+  });
+
   it('blog', async () => {
     const { readOutput } = await executeCli(
       { docsDir: 'fixtures/preset-blog' },
