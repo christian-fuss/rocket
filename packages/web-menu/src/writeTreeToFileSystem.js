@@ -6,7 +6,7 @@ import { dirname, join } from 'path';
 /** @typedef {import('tree-model/types').Node<Page>} NodeOfPage */
 
 /**
- * @param {NodeOfPage} tree 
+ * @param {NodeOfPage} tree
  * @param {string} outputDir
  */
 export async function writeTreeToFileSystem(tree, outputDir) {

@@ -21,19 +21,21 @@ const parser = new SAXParser(SaxEventType.CloseTag | SaxEventType.Comment, strea
 await parser.prepareWasm(saxWasmBuffer);
 
 /**
- * @param {Tag} data 
+ * @param {Tag} data
  * @returns {boolean}
  */
 function isHeadline(data) {
-  return data.name ? data.name[0] === 'h' && ['1', '2', '3', '4', '5', '6'].includes(data.name[1]) : false;
+  return data.name
+    ? data.name[0] === 'h' && ['1', '2', '3', '4', '5', '6'].includes(data.name[1])
+    : false;
 }
 
 /**
- * 
- * @param {string} htmlFilePath 
+ *
+ * @param {string} htmlFilePath
  * @param {object} options
  * @param {string} options.rootDir
- * @returns 
+ * @returns
  */
 export function parseHtmlFile(htmlFilePath, options) {
   const relPath = path.relative(options.rootDir, htmlFilePath);
@@ -59,8 +61,8 @@ export function parseHtmlFile(htmlFilePath, options) {
             const year = date.getFullYear();
             const month = date.getMonth().toString().padStart(2, '0');
             const day = date.getDate().toString().padStart(2, '0'); // getDay === week of the day
-            const hours  = date.getHours().toString().padStart(2, '0');
-            const minutes  = date.getMinutes().toString().padStart(2, '0');
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
             metaData.order = parseInt(`-${year}${month}${day}${hours}${minutes}`);
             metaData.releaseDateTime = dtString;
           }

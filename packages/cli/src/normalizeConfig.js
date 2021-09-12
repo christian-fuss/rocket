@@ -115,7 +115,7 @@ export async function normalizeConfig(inConfig) {
         imagePresets: config.imagePresets,
       };
       if (fileConfig.presets) {
-        config.presets = [...config.presets, ...fileConfig.presets]
+        config.presets = [...config.presets, ...fileConfig.presets];
       }
       if (fileConfig.imagePresets && fileConfig.imagePresets.responsive) {
         config.imagePresets.responsive = {

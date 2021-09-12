@@ -3,7 +3,7 @@ import { executeBuildTree, cleanup, modelComparatorFn } from './test-helpers.js'
 import TreeModel from 'tree-model';
 
 const { expect } = chai;
-const treeModel = new TreeModel({ modelComparatorFn});
+const treeModel = new TreeModel({ modelComparatorFn });
 
 describe('buildTree', () => {
   it('builds a tree for one nested page', async () => {
@@ -114,7 +114,7 @@ describe('buildTree', () => {
     });
 
     expect(tree).to.deep.equal(twoLevels);
-  });  
+  });
 
   it('builds a tree for multiple nested page', async () => {
     const tree = await executeBuildTree('fixtures/nested-pages');

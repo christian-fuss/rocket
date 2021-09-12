@@ -68,7 +68,7 @@ async function getAllFiles(options) {
 }
 
 /**
- * 
+ *
  * @param {upgrade} options
  */
 async function updateFileSystem({ files, folderRenames }) {
@@ -94,8 +94,8 @@ async function updateFileSystem({ files, folderRenames }) {
 }
 
 /**
- * @param {string} relPath 
- * @param {FolderRename[]} folderRenames 
+ * @param {string} relPath
+ * @param {FolderRename[]} folderRenames
  * @returns {string}
  */
 function applyFolderRenames(relPath, folderRenames) {
@@ -158,7 +158,6 @@ export class RocketUpgrade {
       return b.from.split('/').length - a.from.split('/').length;
     });
 
-
     // adjust relPath if there is a new filename
     let i = 0;
     for (const fileData of files) {
@@ -171,7 +170,10 @@ export class RocketUpgrade {
     // adjust relPath to consider renamed folders
     i = 0;
     for (const fileData of files) {
-      const modifiedPath = applyFolderRenames(fileData.updatedRelPath || fileData.relPath, orderedFolderRenames);
+      const modifiedPath = applyFolderRenames(
+        fileData.updatedRelPath || fileData.relPath,
+        orderedFolderRenames,
+      );
       if (modifiedPath !== fileData.relPath) {
         files[i].updatedRelPath = modifiedPath;
       }
@@ -197,7 +199,7 @@ export class RocketUpgrade {
 
     await updateFileSystem({
       files,
-      folderRenames: orderedFolderRenames
+      folderRenames: orderedFolderRenames,
     });
   }
 }

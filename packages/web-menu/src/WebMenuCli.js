@@ -67,7 +67,9 @@ export class WebMenuCli {
     console.log('👀 Analyzing file tree...');
     const tree = await buildTree(this.docsDir);
     if (!tree) {
-      console.error(chalk.red(`💥 Error: Could not find any pages at ${chalk.cyanBright(this.docsDir)}.`));
+      console.error(
+        chalk.red(`💥 Error: Could not find any pages at ${chalk.cyanBright(this.docsDir)}.`),
+      );
       process.exit(1);
     }
 

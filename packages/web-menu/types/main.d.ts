@@ -56,8 +56,8 @@ export interface ConfigOptions {
   docsDir: string;
   outputDir?: string;
   presets?: {
-    [key: string]: Preset
-  }
+    [key: string]: Preset;
+  };
 }
 
 export interface WebMenuCliOptions extends ConfigOptions {

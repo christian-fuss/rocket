@@ -31,29 +31,31 @@ describe('insertMenus', () => {
         { name: 'Getting Started', url: '#', level: 1 },
         { name: 'Components', url: '#', level: 1 },
         { name: 'Blog', url: '#', level: 1 },
-      ]
+      ],
     });
 
     await insertMenus(onePage);
 
-    expect(format(onePage.model.fileString)).to.equal([
-      '<html>',
-      '  <head>',
-      '    <title>Single Menu Header</title>',
-      '  </head>',
-      '  <body>',
-      '    <header>',
-      '      <web-menu preset="header">',
-      '        <nav aria-label="Header">',
-      '          <a href="#">Getting Started</a>',
-      '          <a href="#">Components</a>',
-      '          <a href="#">Blog</a>',
-      '        </nav>',
-      '      </web-menu>',
-      '    </header>',
-      '  </body>',
-      '</html>',
-      '',
-    ].join('\n'));
+    expect(format(onePage.model.fileString)).to.equal(
+      [
+        '<html>',
+        '  <head>',
+        '    <title>Single Menu Header</title>',
+        '  </head>',
+        '  <body>',
+        '    <header>',
+        '      <web-menu preset="header">',
+        '        <nav aria-label="Header">',
+        '          <a href="#">Getting Started</a>',
+        '          <a href="#">Components</a>',
+        '          <a href="#">Blog</a>',
+        '        </nav>',
+        '      </web-menu>',
+        '    </header>',
+        '  </body>',
+        '</html>',
+        '',
+      ].join('\n'),
+    );
   });
 });

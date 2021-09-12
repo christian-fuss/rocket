@@ -24,7 +24,7 @@ export function replaceBetween({ content, start, end, replacement = '' }) {
  * @param {Tag} data
  * @param {string} name
  */
- export function getAttribute(data, name) {
+export function getAttribute(data, name) {
   if (data.attributes) {
     const { attributes } = data;
     const foundIndex = attributes.findIndex(entry => entry.name.value === name);

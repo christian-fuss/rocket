@@ -63,7 +63,7 @@ function processTocElements(metaData) {
 }
 
 /**
- * 
+ *
  * @param {object} process
  * @param {string} process.filePath
  * @param {string} process.rootDir
@@ -73,7 +73,7 @@ function processTocElements(metaData) {
  * @param {string} [options.mode]
  * @param {number} [options.level]
  * @param {string} [options.url]
- * @returns 
+ * @returns
  */
 async function processFile({ filePath, rootDir, currentNode, recursive = false }, options) {
   if (filePath && fs.existsSync(filePath)) {
@@ -104,11 +104,7 @@ async function processFile({ filePath, rootDir, currentNode, recursive = false }
  * @param {string} [options.url]
  * @returns
  */
-export async function buildTree(
-  inRootDir,
-  node,
-  options = {}
-) {
+export async function buildTree(inRootDir, node, options = {}) {
   const { mode = 'indexFile', level = 0, url = '/' } = options;
   const rootDir = path.resolve(inRootDir);
   if (level === 0) {
@@ -118,7 +114,10 @@ export async function buildTree(
 
   if (mode === 'indexFile') {
     const indexFilePath = path.join(rootDir, 'index.html');
-    currentNode = await processFile({ filePath: indexFilePath, rootDir, currentNode, recursive: true }, options);
+    currentNode = await processFile(
+      { filePath: indexFilePath, rootDir, currentNode, recursive: true },
+      options,
+    );
   }
 
   if (mode === 'scan') {
@@ -135,7 +134,10 @@ export async function buildTree(
         });
       } else if (entry.name !== 'index.html') {
         const filePath = path.join(rootDir, entry.name);
-        currentNode = await processFile({ filePath, rootDir, currentNode }, { ...options, url: `${url}${entry.name}` });
+        currentNode = await processFile(
+          { filePath, rootDir, currentNode },
+          { ...options, url: `${url}${entry.name}` },
+        );
       }
     }
   }

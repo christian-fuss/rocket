@@ -2,7 +2,7 @@
 
 /**
  * @param {PresetFn} options
- * @returns 
+ * @returns
  */
 function defaultList(options) {
   const { node, listItem, childCondition, listTag } = options;
@@ -13,13 +13,13 @@ function defaultList(options) {
       <${listTag} class="lvl-${lvl + 1}">
         ${node.children.map(child => listItem({ ...options, node: child })).join('')}
       </${listTag}>
-    `
+    `;
   }
   return '';
 }
 
 /**
- * @param {PresetFn} options 
+ * @param {PresetFn} options
  * @returns {string}
  */
 function defaultListItem({ node, list, link, ...options }) {
@@ -37,7 +37,7 @@ function defaultListItem({ node, list, link, ...options }) {
 }
 
 /**
- * @param {PresetFn} options 
+ * @param {PresetFn} options
  * @returns {string}
  */
 function defaultLink({ node, currentNode }) {
@@ -46,7 +46,7 @@ function defaultLink({ node, currentNode }) {
 }
 
 /**
- * @param {PresetFn} options 
+ * @param {PresetFn} options
  * @returns {Promise<string>}
  */
 async function defaultRender({ list, ...options }) {
@@ -58,7 +58,7 @@ async function defaultRender({ list, ...options }) {
 }
 
 /**
- * @param {PresetFn} options 
+ * @param {PresetFn} options
  * @returns {Promise<string>}
  */
 export async function renderMenu({
