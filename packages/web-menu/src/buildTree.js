@@ -47,7 +47,12 @@ function processTocElements(metaData) {
             .reverse()
             .find(n => n.model.level < child.model.level);
         }
-        node.addChild(child);
+        if (!node) {
+          throw new Error(`Could not find an h1 in "${metaData.relPath}"`);
+        }
+        if (node) {
+          node.addChild(child);
+        }
       }
       currentLevel = level;
       node = child;
@@ -132,7 +137,7 @@ export async function buildTree(inRootDir, node, options = {}) {
           url: `${url}${folderName}/`,
           mode: 'indexFile',
         });
-      } else if (entry.name !== 'index.html') {
+      } else if (entry.name !== 'index.html' && entry.name.endsWith('.html')) {
         const filePath = path.join(rootDir, entry.name);
         currentNode = await processFile(
           { filePath, rootDir, currentNode },

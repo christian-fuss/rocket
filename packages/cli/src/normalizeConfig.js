@@ -101,7 +101,7 @@ export async function normalizeConfig(inConfig) {
   try {
     const fileConfig = await readConfig('rocket.config', userConfigFile, path.resolve(__configDir));
     if (fileConfig) {
-      config = {
+      const updatedConfig = {
         ...config,
         ...fileConfig,
         build: {
@@ -115,14 +115,15 @@ export async function normalizeConfig(inConfig) {
         imagePresets: config.imagePresets,
       };
       if (fileConfig.presets) {
-        config.presets = [...config.presets, ...fileConfig.presets];
+        updatedConfig.presets = [...config.presets, ...fileConfig.presets];
       }
       if (fileConfig.imagePresets && fileConfig.imagePresets.responsive) {
-        config.imagePresets.responsive = {
+        updatedConfig.imagePresets.responsive = {
           ...config.imagePresets.responsive,
           ...fileConfig.imagePresets.responsive,
         };
       }
+      config = updatedConfig;
     }
   } catch (error) {
     console.error('Could not read rocket config file', error);
