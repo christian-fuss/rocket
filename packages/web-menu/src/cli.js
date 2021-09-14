@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
+import { existsSync } from 'fs';
 import path from 'path';
 import { WebMenuCli } from './WebMenuCli.js';
 
@@ -16,7 +16,7 @@ const configFiles = [
 
 for (const configFile of configFiles) {
   const configFilePath = path.join(cwd, configFile);
-  if (fs.existsSync(configFilePath)) {
+  if (existsSync(configFilePath)) {
     cli.setOptions({
       configFile: configFilePath,
     });

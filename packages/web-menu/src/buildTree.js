@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import fs from 'fs-extra';
+import { existsSync } from 'fs';
+import { readdir } from 'fs/promises';
 import TreeModel from 'tree-model';
 import path from 'path';
 import { parseHtmlFile } from './parseHtmlFile.js';
@@ -81,7 +82,7 @@ function processTocElements(metaData) {
  * @returns
  */
 async function processFile({ filePath, rootDir, currentNode, recursive = false }, options) {
-  if (filePath && fs.existsSync(filePath)) {
+  if (filePath && existsSync(filePath)) {
     const { level = 0, url = '/' } = options;
 
     const metaData = await parseHtmlFile(filePath, { rootDir: initialRootDir });
@@ -126,7 +127,7 @@ export async function buildTree(inRootDir, node, options = {}) {
   }
 
   if (mode === 'scan') {
-    const entries = await fs.readdir(rootDir, { withFileTypes: true });
+    const entries = await readdir(rootDir, { withFileTypes: true });
     for (const entry of entries) {
       const { name: folderName } = entry;
       const currentPath = path.join(rootDir, folderName);
