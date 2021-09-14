@@ -4,6 +4,7 @@ import { replaceBetween } from './sax-helpers.js';
 
 /** @typedef {import('../types/main').Page} Page */
 /** @typedef {import('tree-model/types').Node<Page>} NodeOfPage */
+/** @typedef {import('../types/main').WebMenuCliOptions} WebMenuCliOptions */
 
 /**
  * @param {NodeOfPage} tree
@@ -34,6 +35,7 @@ function removeCurrent(tree) {
 
 /**
  * @param {NodeOfPage} tree
+ * @param {Partial<WebMenuCliOptions>} options
  */
 export async function insertMenus(tree, options = {}) {
   let counter = 0;

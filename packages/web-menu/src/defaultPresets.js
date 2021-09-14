@@ -7,9 +7,12 @@ export const defaultPresets = {
      * @returns {string}
      */
     render: ({ node, link, ...options }) => {
+      if (!node.children) {
+        return '';
+      }
       return `
         <nav aria-label="Header">
-          ${node.children.map(child => link({ node: child, ...options })).join('\n')}
+          ${node.children.map(child => link({ node: child, link, ...options })).join('\n')}
         </nav>
       `;
     },
@@ -19,8 +22,12 @@ export const defaultPresets = {
      * @param {renderFn} options
      * @returns {string}
      */
-    render: ({ node, link, ...options }) =>
-      node.children.map(child => link({ node: child, ...options })).join('\n'),
+    render: ({ node, link, ...options }) => {
+      if (!node.children) {
+        return '';
+      }
+      return node.children.map(child => link({ node: child, link, ...options })).join('\n');
+    },
   },
   breadcrumb: {
     /**
@@ -29,6 +36,9 @@ export const defaultPresets = {
      */
     render: ({ node, listItem, ...options }) => {
       const current = node.first(node => node.model.current === true);
+      if (!current) {
+        return '';
+      }
       const nodePath = current.getPath();
       const breadcrumbItem = node =>
         listItem({ node, listItem, ...options, childCondition: () => false });
@@ -60,7 +70,7 @@ export const defaultPresets = {
      * @returns {string}
      */
     link: ({ node, currentNode }) => {
-      if (node.children.length > 0) {
+      if (node.children && node.children.length > 0) {
         const lvl = node.model.level;
         return lvl < 3 ? `<span>${node.model.name}</span>` : '';
       }
@@ -137,6 +147,9 @@ export const defaultPresets = {
      * @returns {string}
      */
     render: ({ currentNode, renderDescription }) => {
+      if (!currentNode || !currentNode.children) {
+        return '';
+      }
       return `
         <div>
           ${currentNode.children
@@ -165,10 +178,12 @@ export const defaultPresets = {
       let next;
       if (parents.length > 1) {
         const parent = parents[parents.length - 2];
-        next = parent.children[currentNode.getIndex() + 1];
+        if (parent && parent.children) {
+          next = parent.children[currentNode.getIndex() + 1];
+        }
       }
       if (!next) {
-        if (currentNode.hasChildren()) {
+        if (currentNode.children) {
           next = currentNode.children[0];
         }
       }
@@ -193,9 +208,11 @@ export const defaultPresets = {
       let previous;
       if (parents.length > 1) {
         const parent = parents[parents.length - 2];
-        previous = parent.children[currentNode.getIndex() - 1];
-        if (!previous) {
-          previous = parent;
+        if (parent && parent.children) {
+          previous = parent.children[currentNode.getIndex() - 1];
+          if (!previous) {
+            previous = parent;
+          }
         }
       }
       if (previous) {
