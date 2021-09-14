@@ -119,7 +119,7 @@ export const defaultPresets = {
       return '';
     },
   },
-  blog: {
+  articleOverview: {
     renderDescription: node => {
       if (node.model.subHeading) {
         return `
@@ -138,7 +138,7 @@ export const defaultPresets = {
      */
     render: ({ currentNode, renderDescription }) => {
       return `
-        <div class="web-menu-blog">
+        <div>
           ${currentNode.children
             .map(
               child => `

@@ -261,9 +261,9 @@ describe('presets', () => {
     );
   });
 
-  it('blog', async () => {
+  it('articleOverview', async () => {
     const { readOutput } = await executeCli(
-      { docsDir: 'fixtures/preset-blog' },
+      { docsDir: 'fixtures/preset-articleOverview' },
       { captureLog: true },
     );
 
@@ -275,8 +275,8 @@ describe('presets', () => {
         '    <title>Blog Overview</title>',
         '  </head>',
         '  <body>',
-        '    <web-menu preset="blog">',
-        '      <div class="web-menu-blog">',
+        '    <web-menu preset="articleOverview">',
+        '      <div>',
         '        <article class="post">',
         // '          <div class="cover">',
         // '            <a href="/blog/new-year-new-challenge/" tabindex="-1" aria-hidden="true">',
