@@ -49,7 +49,7 @@ export interface Preset {
 
 export interface renderFn extends Preset {
   node: Node<Page>;
-  currentNode: Node<Page>;
+  currentNode?: Node<Page>;
 }
 
 export interface ConfigOptions {

@@ -1,7 +1,7 @@
-/** @typedef {import('../types/main').renderFn} PresetFn */
+/** @typedef {import('../types/main').renderFn} renderFn */
 
 /**
- * @param {PresetFn} options
+ * @param {renderFn} options
  * @returns
  */
 function defaultList(options) {
@@ -19,11 +19,11 @@ function defaultList(options) {
 }
 
 /**
- * @param {PresetFn} options
+ * @param {renderFn} options
  * @returns {string}
  */
-function defaultListItem({ node, list, link, ...options }) {
-  const passOn = { node, list, link, ...options };
+function defaultListItem(options) {
+  const { node, link, list } = options;
 
   let cssClasses = '';
   if (node.model.active) {
@@ -33,11 +33,16 @@ function defaultListItem({ node, list, link, ...options }) {
     cssClasses = ' class="web-menu-current" ';
   }
 
-  return `<li${cssClasses}>${link(passOn)}${node.children.length > 0 ? list(passOn) : ''}</li>`;
+  return `
+    <li${cssClasses}>
+      ${link(options)}
+      ${node.children && node.children.length > 0 ? list(options) : ''}
+    </li>
+  `;
 }
 
 /**
- * @param {PresetFn} options
+ * @param {renderFn} options
  * @returns {string}
  */
 function defaultLink({ node, currentNode }) {
@@ -46,7 +51,7 @@ function defaultLink({ node, currentNode }) {
 }
 
 /**
- * @param {PresetFn} options
+ * @param {renderFn} options
  * @returns {Promise<string>}
  */
 async function defaultRender({ list, ...options }) {
@@ -58,19 +63,19 @@ async function defaultRender({ list, ...options }) {
 }
 
 /**
- * @param {PresetFn} options
+ * @param {renderFn} options
  * @returns {Promise<string>}
  */
-export async function renderMenu({
-  node,
-  render = defaultRender,
-  list = defaultList,
-  listItem = defaultListItem,
-  link = defaultLink,
-  childCondition = () => true,
-  listTag = 'ul',
-  ...options
-} = {}) {
+export async function renderMenu(options) {
+  const {
+    node,
+    render = defaultRender,
+    list = defaultList,
+    listItem = defaultListItem,
+    link = defaultLink,
+    childCondition = () => true,
+    listTag = 'ul',
+  } = options;
   const currentNode = node.first(entry => entry.model.current === true);
   return render({ ...options, node, currentNode, list, listItem, link, childCondition, listTag });
 }
