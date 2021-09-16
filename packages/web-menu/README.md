@@ -92,9 +92,16 @@ export default {
 
    ```html
    <web-menu preset="nested">
-     <nav aria-label="Header">
+     <nav aria-label="Main">
        <ul>
          <li><a href="/about/">About</a></li>
+         <li>
+           <a href="/components/">Components</a>
+           <ul class="lvl-2">
+             <li><a href="/about/accordion/">Accordion</a></li>
+             <li><a href="/about/tabs/">Tabs</a></li>
+           </ul>
+         </li>
        </ul>
      </nav>
    </web-menu>
@@ -215,22 +222,23 @@ export default {
    - nested ol/li list
 
    ```html
-   <aside>
-     <h2>Contents</h2>
-     <nav aria-label="Table of Contents">
-       <ol class="lvl-2">
-         <li>
-           <a href="#every-headline">Every headline</a>
-           <ol class="lvl-3">
-             <li><a href="#will-be">will be</a></li>
-           </ol>
-         </li>
-         <li>
-           <a href="#listed">listed</a>
-         </li>
-       </ol>
-     </nav>
-   </aside>
+   <web-menu preset="tableOfContents">
+     <aside>
+       <h2>Contents</h2>
+       <nav aria-label="Table of Contents">
+         <ol class="lvl-2">
+           <li>
+             <a href="#every-headline">Every headline</a>
+             <ol class="lvl-3">
+               <li><a href="#will-be">will be</a></li>
+             </ol>
+           </li>
+           <li><a href="#to-the">to the</a></li>
+           <li><a href="#main-level">main level</a></li>
+         </ol>
+       </nav>
+     </aside>
+   </web-menu>
    ```
 
 7. **next**
@@ -240,9 +248,9 @@ export default {
 
    ```html
    <web-menu preset="next">
-     <a href="/first.html">
+     <a href="/second.html">
        <span>next</span>
-       <span>First</span>
+       <span>Second</span>
      </a>
    </web-menu>
    ```
@@ -254,9 +262,9 @@ export default {
 
    ```html
    <web-menu preset="previous">
-     <a href="/">
+     <a href="/first.html">
        <span>previous</span>
-       <span>Preset Next/Previous</span>
+       <span>First</span>
      </a>
    </web-menu>
    ```

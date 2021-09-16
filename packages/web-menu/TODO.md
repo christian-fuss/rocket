@@ -10,7 +10,6 @@ NICE TO HAVE:
 - Blog needs support for tags & hero image
 - Pagination
 
-
 ## Usage as a @web/dev-server users
 
 Run it in parallel?

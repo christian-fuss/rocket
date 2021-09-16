@@ -1,3 +1,3 @@
 module.exports = {
-  layout: 'layout-blog-details'
-}
+  layout: 'layout-blog-details',
+};
