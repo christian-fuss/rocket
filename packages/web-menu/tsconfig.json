@@ -13,10 +13,10 @@
   },
   "references": [],
   "include": [
-    "preset",
     "src",
     "*.js",
-    "types"
+    "types",
+    "preset"
   ],
   "exclude": [
     "dist",

@@ -110,7 +110,7 @@ export function parseHtmlFile(htmlFilePath, options) {
     const chunks = [];
     const readable = fs.createReadStream(htmlFilePath, streamOptions);
     readable.on('data', chunk => {
-      parser.write(chunk);
+      parser.write(/** @type {Buffer} */ (chunk));
       chunks.push(Buffer.from(chunk));
     });
     readable.on('end', () => {

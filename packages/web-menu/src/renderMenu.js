@@ -32,13 +32,9 @@ function defaultListItem(options) {
   if (node.model.current) {
     cssClasses = ' class="web-menu-current" ';
   }
-
-  return `
-    <li${cssClasses}>
-      ${link(options)}
-      ${node.children && node.children.length > 0 ? list(options) : ''}
-    </li>
-  `;
+  return `<li${cssClasses}>${link(options)}${
+    node.children && node.children.length > 0 ? list(options) : ''
+  }</li>`;
 }
 
 /**

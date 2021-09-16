@@ -44,14 +44,3 @@ export function getText(data) {
   }
   return undefined;
 }
-
-/**
- * @param {Tag} data
- */
-export function getCommentText(data) {
-  // NOTE: we NEED to access data internal value so sax-wasm does not reuse it's value
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const tmp = data.start.line + data.end.line;
-  let value = data.value.trim();
-  return value.startsWith('-->') ? value.substring(3) : value;
-}

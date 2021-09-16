@@ -32,6 +32,8 @@ export interface ParseMetaData {
     id: string;
     level: number;
   }>;
+  releaseDateTime?: string;
+  subHeading?: string;
 }
 
 //
