@@ -23,6 +23,8 @@ export class RocketCliPlugin {
   }
 
   async updated() {
-    await this.webMenu.run();
+    if (this.webMenu) {
+      await this.webMenu.run();
+    }
   }
 }

@@ -13,16 +13,18 @@ class Page {
   // tableOfContentsNode
 }
 
+export interface Menu {
+  name: string;
+  start: Position;
+  end: Position;
+}
+
 export interface ParseMetaData {
   metaLinkText?: string;
   relPath?: string;
   name?: string;
   fileString?: string;
-  menus: Array<{
-    name: string;
-    start: Position;
-    end: Position;
-  }>;
+  menus: Menu[];
   order?: number;
   exclude?: boolean;
   h1?: string;
@@ -34,6 +36,7 @@ export interface ParseMetaData {
   }>;
   releaseDateTime?: string;
   subHeading?: string;
+  tableOfContentsNode?: Node<Page>;
 }
 
 //

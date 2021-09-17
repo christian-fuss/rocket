@@ -32,7 +32,7 @@ let initialRootDir;
  */
 function processTocElements(metaData) {
   let node;
-  let currentLevel;
+  let currentLevel = 0;
   if (metaData.__tocElements && metaData.__tocElements.length > 0) {
     for (const tocElement of metaData.__tocElements) {
       const { id, text, level } = tocElement;
