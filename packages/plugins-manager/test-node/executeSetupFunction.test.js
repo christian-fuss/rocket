@@ -1,6 +1,6 @@
 import chai from 'chai';
 
-import { executeSetupFunctions, addPlugin } from 'plugins-manager';
+import { executeSetupFunctions, addPlugin } from '../index.js';
 
 const { expect } = chai;
 
@@ -9,27 +9,27 @@ describe('executeSetupFunctions', () => {
   const secondPlugin = () => 'secondPlugin';
   const thirdPlugin = () => 'thirdPlugin';
 
+  /**
+   * @type {import('../types/main').MetaPlugin<() => void>[]} plugins
+   */
   const threeExistingPlugin = [
-    { name: 'first', plugin: firstPlugin },
-    { name: 'second', plugin: secondPlugin },
-    { name: 'third', plugin: thirdPlugin },
+    { plugin: firstPlugin },
+    { plugin: secondPlugin },
+    { plugin: thirdPlugin },
   ];
 
   it('executes and returns a new array not adjusting the original', async () => {
     const metaPlugins = executeSetupFunctions(
-      [
-        addPlugin({ name: 'add-a', plugin: () => 'a' }),
-        addPlugin({ name: 'add-b', plugin: () => 'b' }),
-      ],
+      [addPlugin(() => 'a'), addPlugin(() => 'b')],
       threeExistingPlugin,
     );
     expect(metaPlugins.length).to.equal(5);
 
     // does not change original array
     expect(threeExistingPlugin).to.deep.equal([
-      { name: 'first', plugin: firstPlugin },
-      { name: 'second', plugin: secondPlugin },
-      { name: 'third', plugin: thirdPlugin },
+      { plugin: firstPlugin },
+      { plugin: secondPlugin },
+      { plugin: thirdPlugin },
     ]);
   });
 });

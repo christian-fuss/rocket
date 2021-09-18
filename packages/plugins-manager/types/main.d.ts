@@ -1,24 +1,33 @@
 type AnyFn = (...args: any[]) => any;
+type Plugin = Constructor | AnyFn;
+type Constructor<T = {}> = { new (...args: any[]): T };
+type FunctionParams<T> = T extends (...args: infer U) => string ? U : never;
 
-export interface MetaPlugin<F = AnyFn> {
-  name: string;
-  plugin: F extends (options?: infer O) => unknown ? F : any;
-  options?: /* prettier-ignore */ (
-      F extends (eleventyConfig: any, options?: infer O) => void ? O
-    : F extends (options: infer O) => unknown ? O
-    : any
-  );
+export type GetPluginOptions<T> = Partial<
+  T extends Constructor ? InstanceType<T> : T extends AnyFn ? FunctionParams<T>[0] : T
+>;
+
+export interface MetaPlugin<T> {
+  plugin: Plugin;
+  options?: GetPluginOptions<T>;
 }
 
-export interface MetaPluginWrapable extends MetaPlugin {
-  __noWrap?: boolean;
-}
-
-export type AddPluginOptions<T> = MetaPlugin<T> & {
+export interface ManagerOptions {
   how?: 'after' | 'before' | 'fixed';
-  location?: 'top' | 'bottom' | string;
-};
+  location?: 'top' | 'bottom' | Plugin;
+}
 
-export type AddPluginFn = (plugins: MetaPlugin[]) => MetaPlugin[];
+// ==== old =====
 
-export type AddPluginType = <F>(metaPluginAndOptions: AddPluginOptions<F>) => AddPluginFn;
+// export type AddPluginOptions<T> = MetaPlugin<T> & {
+//   how?: 'after' | 'before' | 'fixed';
+//   location?: 'top' | 'bottom' | string;
+// };
+
+// export type AddPluginType = <F>(metaPluginAndOptions: AddPluginOptions<F>) => AddPluginFn;
+
+// export type AddPluginFn = (plugins: MetaPlugin[]) => MetaPlugin[];
+
+// export interface MetaPluginWrapable extends MetaPlugin {
+//   __noWrap?: boolean;
+// }
