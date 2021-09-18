@@ -1,4 +1,6 @@
 /** @typedef {import('../types/main').renderFn} renderFn */
+/** @typedef {import('../types/main').Page} Page */
+/** @typedef {import('tree-model/types').Node<Page>} NodeOfPage */
 
 export const defaultPresets = {
   header: {
@@ -40,6 +42,7 @@ export const defaultPresets = {
         return '';
       }
       const nodePath = current.getPath();
+      /** @param {NodeOfPage} node */
       const breadcrumbItem = node =>
         listItem({ node, listItem, ...options, childCondition: () => false });
       return `
@@ -58,6 +61,9 @@ export const defaultPresets = {
      * @returns {Promise<string>}
      */
     render: async ({ list, node, currentNode, ...options }) => {
+      if (!currentNode) {
+        return '';
+      }
       const activeLevelTwo = currentNode.getPath()[1] || node;
       return `
         <nav aria-label="main">
@@ -83,6 +89,9 @@ export const defaultPresets = {
      */
     list: options => {
       const { node, listItem, childCondition, listTag, currentNode } = options;
+      if (!currentNode) {
+        return '';
+      }
       const open = currentNode.getPath().includes(node) ? 'open' : '';
 
       if (childCondition(node) && node.children) {
@@ -108,6 +117,9 @@ export const defaultPresets = {
      * @returns {Promise<string>}
      */
     render: async ({ list, currentNode, navHeader, navLabel, navWrapper, ...options }) => {
+      if (!currentNode) {
+        return '';
+      }
       if (
         currentNode.model.tableOfContentsNode &&
         currentNode.model.tableOfContentsNode.children.length > 0
@@ -130,6 +142,7 @@ export const defaultPresets = {
     },
   },
   articleOverview: {
+    /** @param {NodeOfPage} node */
     renderDescription: node => {
       if (node.model.subHeading) {
         return `
@@ -174,6 +187,9 @@ export const defaultPresets = {
      * @returns {string}
      */
     render: ({ currentNode }) => {
+      if (!currentNode) {
+        return '';
+      }
       const parents = currentNode.getPath();
       let next;
       if (parents.length > 1) {
@@ -204,6 +220,9 @@ export const defaultPresets = {
      * @returns {string}
      */
     render: ({ currentNode }) => {
+      if (!currentNode) {
+        return '';
+      }
       const parents = currentNode.getPath();
       let previous;
       if (parents.length > 1) {

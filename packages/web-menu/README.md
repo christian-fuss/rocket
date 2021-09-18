@@ -56,8 +56,22 @@ export default {
 ## Add your own menu type
 
 ```js
+import { Menu } from '@web/menu'
+
+class MyMenu extends Menu {
+  static name = 'my-menu';
+  
+  async render() {
+    return '--- My Menu ---';
+  }
+}
+
+
 export default {
   docsDir: 'my-menu/',
+  presets: [
+    addPlugin(MyMenu)
+  ],
   presets: {
     myMenu: {
       async render() {
