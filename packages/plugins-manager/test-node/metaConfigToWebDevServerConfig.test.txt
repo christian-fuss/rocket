@@ -4,7 +4,7 @@ import { metaConfigToWebDevServerConfig, addPlugin } from 'plugins-manager';
 
 const { expect } = chai;
 
-describe('metaConfigToWebDevServerConfig', () => {
+describe.skip('metaConfigToWebDevServerConfig', () => {
   const twoExistingPlugin = [
     { name: 'first', plugin: () => 'firstPlugin' },
     { name: 'second', plugin: () => 'secondPlugin' },

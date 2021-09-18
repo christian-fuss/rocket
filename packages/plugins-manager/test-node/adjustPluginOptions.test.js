@@ -1,33 +1,33 @@
 import chai from 'chai';
 
-import { adjustPluginOptions, metaConfigToRollupConfig } from 'plugins-manager';
+import { adjustPluginOptions, applyPlugins } from '../index.js';
 
 const { expect } = chai;
 
 describe('adjustPluginOptions', () => {
+  const firstPlugin = ({ flag = 'default-flag' } = {}) => `firstPlugin-${flag}`;
+  const secondPlugin = ({ other = { nested: 'other.nested', nested2: 'other.nested2' } } = {}) =>
+    `secondPlugin-${other.nested}-${other.nested2}`;
+  const thirdPlugin = ({ name = 'name' }) => `thirdPlugin-${name}`;
+
   const defaultCurrentMetaPlugins = [
+    { plugin: firstPlugin, options: { flag: 'firstSettings' } },
     {
-      name: 'first',
-      plugin: options => `firstPlugin-${options.flag}`,
-      options: { flag: 'firstSettings' },
-    },
-    {
-      name: 'second',
-      plugin: options => `secondPlugin-${options.other.nested}-${options.other.nested2}`,
+      plugin: secondPlugin,
       options: { other: { nested: 'other.nested', nested2: 'other.nested2' } },
     },
-    { name: 'third', plugin: options => `thirdPlugin-${options}`, options: 'aString' },
+    { plugin: thirdPlugin, options: { name: 'name' } },
   ];
   function newCurrentMetaPlugins() {
     return defaultCurrentMetaPlugins.map(obj => ({ ...obj }));
   }
 
   it('will merge options objects (flatly)', async () => {
-    const config = metaConfigToRollupConfig(
+    const config = applyPlugins(
       {
         setupPlugins: [
-          adjustPluginOptions('first', { flag: '#mod#FirstSettings' }),
-          adjustPluginOptions('second', { other: { nested: '#mod#other.nested' } }),
+          adjustPluginOptions(firstPlugin, { flag: '#mod#FirstSettings' }),
+          adjustPluginOptions(secondPlugin, { other: { nested: '#mod#other.nested' } }),
         ],
       },
       newCurrentMetaPlugins(),
@@ -35,14 +35,14 @@ describe('adjustPluginOptions', () => {
     expect(config.plugins).to.deep.equal([
       'firstPlugin-#mod#FirstSettings',
       'secondPlugin-#mod#other.nested-undefined',
-      'thirdPlugin-aString',
+      'thirdPlugin-name',
     ]);
   });
 
   it('will override non object settings', async () => {
-    const config = metaConfigToRollupConfig(
+    const config = applyPlugins(
       {
-        setupPlugins: [adjustPluginOptions('third', '#mod#aString')],
+        setupPlugins: [adjustPluginOptions(thirdPlugin, { name: '#mod#aString' })],
       },
       newCurrentMetaPlugins(),
     );
@@ -54,10 +54,10 @@ describe('adjustPluginOptions', () => {
   });
 
   it('accepts a function as a setting to manually merge objects', async () => {
-    const config = metaConfigToRollupConfig(
+    const config = applyPlugins(
       {
         setupPlugins: [
-          adjustPluginOptions('second', config => ({
+          adjustPluginOptions(secondPlugin, config => ({
             other: { ...config.other, nested: '#mod#other.nested' },
           })),
         ],
@@ -67,15 +67,15 @@ describe('adjustPluginOptions', () => {
     expect(config.plugins).to.deep.equal([
       'firstPlugin-firstSettings',
       'secondPlugin-#mod#other.nested-other.nested2',
-      'thirdPlugin-aString',
+      'thirdPlugin-name',
     ]);
   });
 
   it('throws if given location does not exist', async () => {
     expect(() => {
-      metaConfigToRollupConfig({
-        setupPlugins: [adjustPluginOptions('not-found', '#mod#aString')],
+      applyPlugins({
+        setupPlugins: [adjustPluginOptions(firstPlugin, { name: 'newName' })],
       });
-    }).to.throw('Could not find a plugin with the name "not-found" to adjust the options.');
+    }).to.throw('Could not find a plugin with the name "firstPlugin" to adjust its options.');
   });
 });
