@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { Menu } from '../index.js';
+import { findCurrentNode, Menu } from '../index.js';
 
 import TreeModel from 'tree-model';
 
@@ -113,6 +113,7 @@ describe('renderMenu', () => {
         },
       ],
     });
+    defaultMenu.currentNode = findCurrentNode(componentsActive);
     const htmlNavigation = await defaultMenu.render(componentsActive);
     expect(format(htmlNavigation)).to.equal(
       [

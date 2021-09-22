@@ -17,7 +17,7 @@ describe('cli', () => {
       },
       { captureLog: true },
     );
-    expect(log[0]).to.equal('👀 Analyzing file tree...');
+    expect(log[0]).to.match(/^👀 Analyzing file tree at/);
     expect(log[1]).to.equal('📖 Found 2 pages');
     expect(log[2]).to.equal('📝 Inserted 2 menus!');
     expect(log[3]).to.match(/^✍️ {2}Writing files to/);
@@ -134,7 +134,7 @@ describe('cli', () => {
         '      </web-menu>',
         '    </header>',
         '    <aside>',
-        '      <web-menu preset="myMenu">--- My Menu ---</web-menu>',
+        '      <web-menu preset="my-menu">--- My Menu ---</web-menu>',
         '    </aside>',
         '  </body>',
         '</html>',

@@ -47,6 +47,7 @@ export class WebMenuCli {
       argv,
     });
     this.options = {
+      ...this.options,
       configFile: options['config-file'],
       docsDir: options['docs-dir'],
     };
@@ -56,13 +57,14 @@ export class WebMenuCli {
    * @param {Partial<WebMenuCliOptions>} newOptions
    */
   setOptions(newOptions) {
+    const setupPlugins = newOptions.setupPlugins
+      ? [...this.options.setupPlugins, ...newOptions.setupPlugins]
+      : this.options.setupPlugins;
+
     this.options = {
       ...this.options,
       ...newOptions,
-      setupPlugins: {
-        ...this.options.setupPlugins,
-        ...newOptions.setupPlugins,
-      },
+      setupPlugins,
     };
   }
 
@@ -89,7 +91,8 @@ export class WebMenuCli {
       : path.join(this.docsDir, '..', '_site');
     const performanceStart = process.hrtime();
 
-    console.log('👀 Analyzing file tree...');
+    const relPath = path.relative(process.cwd(), this.docsDir);
+    console.log(`👀 Analyzing file tree at ${chalk.cyanBright(relPath)}`);
     const tree = await buildTree(this.docsDir);
     if (!tree) {
       console.error(

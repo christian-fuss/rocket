@@ -2,7 +2,7 @@ import { Menu } from '@web/menu';
 import { addPlugin } from 'plugins-manager';
 
 class MyMenu extends Menu {
-  static type = 'myMenu';
+  static type = 'my-menu';
 
   async render() {
     return '--- My Menu ---';
