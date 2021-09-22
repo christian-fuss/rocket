@@ -24,7 +24,7 @@ function isClass(func) {
  * @param {import('../types/main').MetaPlugin<T>[]} [defaultPlugins]
  */
 export function applyPlugins(config, defaultPlugins = []) {
-  if (config.plugins) {
+  if (config.plugins && config.plugins.length > 0) {
     delete config.setupPlugins;
     return config;
   }

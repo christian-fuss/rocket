@@ -15,8 +15,7 @@
   "include": [
     "src",
     "*.js",
-    "types",
-    "test-node"
+    "types"
   ],
   "exclude": [
     "dist",

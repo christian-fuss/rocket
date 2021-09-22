@@ -17,6 +17,11 @@ export interface ManagerOptions {
   location?: 'top' | 'bottom' | Plugin;
 }
 
+// --- TYPES for mergeOptions ---
+// function adjustPluginOptions<T>(plugin: T, options: GetPluginOptions<T> | (( options: GetPluginOptions<T>) => GetPluginOptions<T>)) {
+
+
+
 // ==== old =====
 
 // export type AddPluginOptions<T> = MetaPlugin<T> & {
