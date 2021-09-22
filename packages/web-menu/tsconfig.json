@@ -11,7 +11,11 @@
     "checkJs": true,
     "emitDeclarationOnly": true
   },
-  "references": [],
+  "references": [
+    {
+      "path": "../plugins-manager/tsconfig.json"
+    }
+  ],
   "include": [
     "src",
     "*.js",

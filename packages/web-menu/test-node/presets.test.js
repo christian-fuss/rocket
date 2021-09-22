@@ -7,7 +7,7 @@ const { expect } = chai;
 describe('presets', () => {
   before(() => {
     // ignore colors in tests as most CIs won't support it
-    chalk.level = 0;
+    // chalk.level = 0;
   });
 
   it('breadcrumb', async () => {
@@ -261,9 +261,9 @@ describe('presets', () => {
     );
   });
 
-  it('articleOverview', async () => {
+  it('article-overview', async () => {
     const { readOutput } = await executeCli(
-      { docsDir: 'fixtures/preset-articleOverview' },
+      { docsDir: 'fixtures/plugin-article-overview' },
       { captureLog: true },
     );
 
@@ -275,7 +275,7 @@ describe('presets', () => {
         '    <title>Blog Overview</title>',
         '  </head>',
         '  <body>',
-        '    <web-menu preset="articleOverview">',
+        '    <web-menu preset="article-overview">',
         '      <div>',
         '        <article class="post">',
         // '          <div class="cover">',
@@ -466,7 +466,7 @@ describe('presets', () => {
         '    <title>Welcome to the toc preset | My Page</title>',
         '  </head>',
         '  <body>',
-        '    <web-menu preset="tableOfContents"',
+        '    <web-menu preset="table-of-contents"',
         '      ><aside>',
         '        <h2>Contents</h2>',
         '        <nav aria-label="Table of Contents">',
@@ -522,7 +522,7 @@ describe('presets', () => {
         '    <title>Welcome to the toc preset | My Page</title>',
         '  </head>',
         '  <body>',
-        '    <web-menu preset="tableOfContents"></web-menu>',
+        '    <web-menu preset="table-of-contents"></web-menu>',
         '    <main>',
         '      <h1>Empty because no sub headlines</h1>',
         '      <h2>or no ids</h2>',

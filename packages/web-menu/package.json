@@ -36,6 +36,8 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "command-line-args": "^5.1.1",
+    "nanocolors": "^0.1.6",
+    "plugins-manager": "^0.2.4",
     "sax-wasm": "^2.0.0",
     "tree-model": "^1.0.7"
   },

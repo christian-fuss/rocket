@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { renderMenu } from '@web/menu';
+import { Menu } from '../index.js';
 
 import TreeModel from 'tree-model';
 
@@ -18,12 +18,16 @@ const twoLevels = tree.parse({
   ],
 });
 
+const defaultMenu = new Menu();
+
 describe('renderMenu', () => {
   it('can build a menu only for the first level', async () => {
-    const htmlNavigation = await renderMenu({
-      node: twoLevels,
-      childCondition: node => node.model.level === 0,
-    });
+    class FirstLevelMenu extends Menu {
+      childCondition = node => node.model.level === 0;
+    }
+    const myMenu = new FirstLevelMenu();
+
+    const htmlNavigation = await myMenu.render(twoLevels);
     expect(format(htmlNavigation)).to.equal(
       [
         '<nav aria-label="Main">',
@@ -38,10 +42,13 @@ describe('renderMenu', () => {
   });
 
   it('can customize the render function completely', async () => {
-    const htmlNavigation = await renderMenu({
-      node: twoLevels,
-      render: ({ node, link }) => node.children.map(child => link({ node: child })).join('\n'),
-    });
+    class FlatMenu extends Menu {
+      async render(node) {
+        return node.children.map(child => this.link(child)).join('\n');
+      }
+    }
+    const myMenu = new FlatMenu();
+    const htmlNavigation = await myMenu.render(twoLevels);
     expect(htmlNavigation).to.equal(
       [
         //
@@ -68,7 +75,7 @@ describe('renderMenu', () => {
         },
       ],
     });
-    const htmlNavigation = await renderMenu({ node: components });
+    const htmlNavigation = await defaultMenu.render(components);
     expect(format(htmlNavigation)).to.equal(
       [
         '<nav aria-label="Main">',
@@ -106,7 +113,7 @@ describe('renderMenu', () => {
         },
       ],
     });
-    const htmlNavigation = await renderMenu({ node: componentsActive });
+    const htmlNavigation = await defaultMenu.render(componentsActive);
     expect(format(htmlNavigation)).to.equal(
       [
         '<nav aria-label="Main">',

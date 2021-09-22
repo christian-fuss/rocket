@@ -5,14 +5,37 @@
 import path from 'path';
 import chalk from 'chalk';
 
+import { applyPlugins } from 'plugins-manager';
+
 import commandLineArgs from 'command-line-args';
 import { buildTree } from './buildTree.js';
 import { insertMenus } from './insertMenus.js';
 import { writeTreeToFileSystem } from './writeTreeToFileSystem.js';
 
+import { Header } from './menus/Header.js';
+import { Breadcrumb } from './menus/Breadcrumb.js';
+import { Next } from './menus/Next.js';
+import { Previous } from './menus/Previous.js';
+import { ArticleOverview } from './menus/ArticleOverview.js';
+import { Main } from './menus/Main.js';
+import { TableOfContents } from './menus/TableOfContents.js';
+
+const defaultPlugins = [
+  { plugin: Header },
+  { plugin: Breadcrumb },
+  { plugin: Next },
+  { plugin: Main },
+  { plugin: Previous },
+  { plugin: ArticleOverview },
+  { plugin: TableOfContents },
+];
+
 export class WebMenuCli {
   /** @type {WebMenuCliOptions} */
-  options;
+  options = {
+    plugins: [],
+    setupPlugins: [],
+  };
 
   constructor({ argv } = { argv: undefined }) {
     const mainDefinitions = [
@@ -36,9 +59,9 @@ export class WebMenuCli {
     this.options = {
       ...this.options,
       ...newOptions,
-      presets: {
-        ...this.options.presets,
-        ...newOptions.presets,
+      setupPlugins: {
+        ...this.options.setupPlugins,
+        ...newOptions.setupPlugins,
       },
     };
   }
@@ -56,6 +79,8 @@ export class WebMenuCli {
     if (this.options.configFile) {
       await this.applyConfigFile();
     }
+
+    this.options = applyPlugins(this.options, defaultPlugins);
 
     const { docsDir: userDocsDir, outputDir: userOutputDir } = this.options;
     this.docsDir = userDocsDir ? path.resolve(userDocsDir) : process.cwd();

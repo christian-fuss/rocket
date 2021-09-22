@@ -63,6 +63,8 @@ export interface ConfigOptions {
   presets?: {
     [key: string]: Preset;
   };
+
+  setupMenus?: (menus: Menu[]) => Menu[];
 }
 
 export interface WebMenuCliOptions extends ConfigOptions {

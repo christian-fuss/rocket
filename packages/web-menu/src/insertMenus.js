@@ -1,5 +1,3 @@
-import { defaultPresets } from './defaultPresets.js';
-import { renderMenu } from './renderMenu.js';
 import { replaceBetween } from './sax-helpers.js';
 
 /** @typedef {import('../types/main').Page} Page */
@@ -39,7 +37,7 @@ function removeCurrent(tree) {
  */
 export async function insertMenus(tree, options = {}) {
   let counter = 0;
-  const presets = { ...defaultPresets, ...options.presets };
+  const { plugins } = options;
 
   for (const node of tree.all()) {
     if (node.model.menus && node.model.menus.length > 0) {
@@ -47,10 +45,12 @@ export async function insertMenus(tree, options = {}) {
 
       for (const menu of node.model.menus.reverse()) {
         counter += 1;
-        if (!presets[menu.name]) {
-          throw new Error(`Unknown menu preset: ${menu.name}`);
+        const menuInst = plugins.find(pluginInst => pluginInst.constructor.type === menu.name);
+        if (!menuInst) {
+          throw new Error(`Unknown menu type: ${menu.name}`);
         }
-        const menuString = await renderMenu({ node: tree, ...presets[menu.name] });
+        menuInst.currentNode = tree.first(entry => entry.model.current === true);
+        const menuString = await menuInst.render(tree);
         node.model.fileString = replaceBetween({
           content: node.model.fileString,
           start: menu.start,
