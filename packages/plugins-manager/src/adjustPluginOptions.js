@@ -9,7 +9,7 @@ function isObject(obj) {
 
 /**
  * @template {import('../types/main').Plugin} T
- * @param {Plugin} plugin
+ * @param {T} plugin
  * @param {import('../types/main').GetPluginOptions<T>} mergeOptions
  */
 export function adjustPluginOptions(plugin, mergeOptions) {

@@ -4,7 +4,7 @@ import { applyPlugins, addPlugin } from '../index.js';
 
 const { expect } = chai;
 
-describe.only('applyPlugins', () => {
+describe('applyPlugins', () => {
   const insertPlugin = () => `-- insertPlugin --`;
   const oneExistingPlugin = [{ plugin: () => 'firstPlugin' }];
   const threeExistingPlugin = [
@@ -29,6 +29,15 @@ describe.only('applyPlugins', () => {
     expect(config.setupPlugins).to.be.undefined;
   });
 
+  it('a provided plugins property will always win even if it is an empty array', async () => {
+    const config = applyPlugins({
+      setupPlugins: [addPlugin(insertPlugin)],
+      plugins: [],
+    });
+    expect(config.plugins).to.deep.equal([]);
+    expect(config.setupPlugins).to.be.undefined;
+  });
+
   it('prefers a user set config.plugins', async () => {
     const config = applyPlugins(
       {
@@ -43,18 +52,33 @@ describe.only('applyPlugins', () => {
 
   it('works with classes', async () => {
     class FirstClass {
-      name = '-- FirstClass --';
+      constructor({ firstName = 'initial-first' } = {}) {
+        this.options = { firstName };
+      }
+
+      render() {
+        return `[[ firstName: ${this.options.firstName} ]]`;
+      }
     }
     class SecondClass {
-      name = '-- SecondClass --';
+      constructor({ lastName = 'initial-second' } = {}) {
+        this.options = { lastName };
+      }
+
+      render() {
+        return `[[ lastName: ${this.options.lastName} ]]`;
+      }
     }
 
     const config = applyPlugins({
-      setupPlugins: [addPlugin(FirstClass), addPlugin(SecondClass)],
+      setupPlugins: [
+        addPlugin(FirstClass),
+        addPlugin(SecondClass, { lastName: 'set-via-addPlugin' }),
+      ],
     });
 
     expect(
-      config.plugins.map(/** @param {FirstClass | SecondClass} fn */ fn => fn.name),
-    ).to.deep.equal(['-- FirstClass --', '-- SecondClass --']);
+      config.plugins.map(/** @param {FirstClass | SecondClass} cls */ cls => cls.render()),
+    ).to.deep.equal(['[[ firstName: initial-first ]]', '[[ lastName: set-via-addPlugin ]]']);
   });
 });

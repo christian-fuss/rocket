@@ -6,6 +6,14 @@ const { expect } = chai;
 
 describe('adjustPluginOptions', () => {
   const firstPlugin = ({ flag = 'default-flag' } = {}) => `firstPlugin-${flag}`;
+
+  /**
+   * @param {object} options
+   * @param {object} [options.other]
+   * @param {string} [options.other.nested]
+   * @param {string} [options.other.nested2]
+   * @returns
+   */
   const secondPlugin = ({ other = { nested: 'other.nested', nested2: 'other.nested2' } } = {}) =>
     `secondPlugin-${other.nested}-${other.nested2}`;
   const thirdPlugin = ({ name = 'name' }) => `thirdPlugin-${name}`;
@@ -57,6 +65,8 @@ describe('adjustPluginOptions', () => {
     const config = applyPlugins(
       {
         setupPlugins: [
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           adjustPluginOptions(secondPlugin, config => ({
             other: { ...config.other, nested: '#mod#other.nested' },
           })),
@@ -74,8 +84,45 @@ describe('adjustPluginOptions', () => {
   it('throws if given location does not exist', async () => {
     expect(() => {
       applyPlugins({
-        setupPlugins: [adjustPluginOptions(firstPlugin, { name: 'newName' })],
+        setupPlugins: [adjustPluginOptions(firstPlugin, { flag: 'newFlag' })],
       });
     }).to.throw('Could not find a plugin with the name "firstPlugin" to adjust its options.');
+  });
+
+  it('works with classes', async () => {
+    class FirstClass {
+      constructor({ firstName = 'initial-first' } = {}) {
+        this.options = { firstName };
+      }
+
+      render() {
+        return `[[ firstName: ${this.options.firstName} ]]`;
+      }
+    }
+    class SecondClass {
+      constructor({ lastName = 'initial-second' } = {}) {
+        this.options = { lastName };
+      }
+
+      render() {
+        return `[[ lastName: ${this.options.lastName} ]]`;
+      }
+    }
+
+    const config = applyPlugins(
+      {
+        setupPlugins: [
+          adjustPluginOptions(SecondClass, { lastName: 'set-via-adjustPluginOptions' }),
+        ],
+      },
+      [{ plugin: FirstClass }, { plugin: SecondClass }],
+    );
+
+    expect(
+      config.plugins.map(/** @param {FirstClass | SecondClass} cls */ cls => cls.render()),
+    ).to.deep.equal([
+      '[[ firstName: initial-first ]]',
+      '[[ lastName: set-via-adjustPluginOptions ]]',
+    ]);
   });
 });

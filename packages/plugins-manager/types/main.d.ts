@@ -4,7 +4,7 @@ type Constructor<T = {}> = { new (...args: any[]): T };
 type FunctionParams<T> = T extends (...args: infer U) => string ? U : never;
 
 export type GetPluginOptions<T> = Partial<
-  T extends Constructor ? InstanceType<T> : T extends AnyFn ? FunctionParams<T>[0] : T
+  T extends Constructor ? ConstructorParameters<T>[0] : T extends AnyFn ? FunctionParams<T>[0] : T
 >;
 
 export interface MetaPlugin<T> {
@@ -16,6 +16,11 @@ export interface ManagerOptions {
   how?: 'after' | 'before' | 'fixed';
   location?: 'top' | 'bottom' | Plugin;
 }
+
+// --- TYPES for mergeOptions ---
+// function adjustPluginOptions<T>(plugin: T, options: GetPluginOptions<T> | (( options: GetPluginOptions<T>) => GetPluginOptions<T>)) {
+
+
 
 // ==== old =====
 
