@@ -13,9 +13,9 @@ describe('executeSetupFunctions', () => {
    * @type {import('../types/main').MetaPlugin<() => void>[]} plugins
    */
   const threeExistingPlugin = [
-    { plugin: firstPlugin },
-    { plugin: secondPlugin },
-    { plugin: thirdPlugin },
+    { plugin: firstPlugin, options: {} },
+    { plugin: secondPlugin, options: {} },
+    { plugin: thirdPlugin, options: {} },
   ];
 
   it('executes and returns a new array not adjusting the original', async () => {
@@ -27,9 +27,9 @@ describe('executeSetupFunctions', () => {
 
     // does not change original array
     expect(threeExistingPlugin).to.deep.equal([
-      { plugin: firstPlugin },
-      { plugin: secondPlugin },
-      { plugin: thirdPlugin },
+      { plugin: firstPlugin, options: {} },
+      { plugin: secondPlugin, options: {} },
+      { plugin: thirdPlugin, options: {} },
     ]);
   });
 });

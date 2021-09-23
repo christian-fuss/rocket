@@ -4,7 +4,7 @@
  * @param {import('../types/main').GetPluginOptions<T>} [options]
  * @param {import('../types/main').ManagerOptions} [managerOptions]
  */
-export function addPlugin(plugin, options, { how = 'after', location = 'bottom' } = {}) {
+export function addPlugin(plugin, options = {}, { how = 'after', location = 'bottom' } = {}) {
   /**
    * @param {import('../types/main').MetaPlugin<T>[]} plugins
    */

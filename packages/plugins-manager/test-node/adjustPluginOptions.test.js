@@ -65,10 +65,8 @@ describe('adjustPluginOptions', () => {
     const config = applyPlugins(
       {
         setupPlugins: [
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           adjustPluginOptions(secondPlugin, config => ({
-            other: { ...config.other, nested: '#mod#other.nested' },
+            other: { ...config?.other, nested: '#mod#other.nested' },
           })),
         ],
       },

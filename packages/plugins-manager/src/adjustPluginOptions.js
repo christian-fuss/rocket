@@ -10,7 +10,7 @@ function isObject(obj) {
 /**
  * @template {import('../types/main').Plugin} T
  * @param {T} plugin
- * @param {import('../types/main').GetPluginOptions<T>} mergeOptions
+ * @param {import('../types/main').adjustPluginOptionsOptions<T>} mergeOptions
  */
 export function adjustPluginOptions(plugin, mergeOptions) {
   /**
@@ -27,8 +27,6 @@ export function adjustPluginOptions(plugin, mergeOptions) {
     }
 
     if (typeof mergeOptions === 'function') {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       plugins[index].options = mergeOptions(plugins[index].options);
     } else if (isObject(plugins[index].options)) {
       plugins[index].options = { ...plugins[index].options, ...mergeOptions };
